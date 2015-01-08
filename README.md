@@ -1,2 +1,2 @@
 # LdapSearch
-Search LDAP directories in a breeze
+Search LDAP directories in a breeze!
