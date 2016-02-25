@@ -1,5 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("LdapSearch.Tests")]
 
 namespace LdapSearch
 {
@@ -48,7 +51,7 @@ namespace LdapSearch
       }
     }
 
-    private void SearchCommandExecuted()
+    internal void SearchCommandExecuted()
     {
       if (string.IsNullOrEmpty(SearchString)) return;
 
