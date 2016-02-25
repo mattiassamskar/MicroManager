@@ -3,7 +3,6 @@ using System.Windows.Media.Imaging;
 
 namespace LdapSearch
 {
-
   public class User
   {
     public string DistinguishedName { get; set; }

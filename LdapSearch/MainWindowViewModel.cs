@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 
 namespace LdapSearch
@@ -53,7 +52,7 @@ namespace LdapSearch
 
       Users.Clear();
       var searchStrings = SearchString.Split(new[] { ';', ',' }).ToList();
-      searchStrings.ForEach(s => ldapHandler.Search(s).ForEach(Users.Add));
+      searchStrings.ForEach(s => ldapHandler.Search(s).ToList().ForEach(Users.Add));
       SelectedUser = Users.FirstOrDefault();
     }
 
