@@ -20,6 +20,7 @@ namespace LdapSearch.Tests
       // Assert
       ldapHandler.DidNotReceive().Search(Arg.Any<string>());
     }
+
     [Fact]
     public void Should_remove_old_search_result_when_searching_again()
     {
@@ -78,8 +79,8 @@ namespace LdapSearch.Tests
     {
       // Arrange
       var ldapHandler = Substitute.For<ILdapHandler>();
-
       var wasCalled = false;
+
       var mainWindowViewModel = new MainWindowViewModel(ldapHandler);
       mainWindowViewModel.PropertyChanged += (sender, args) => wasCalled = true;
 
@@ -95,8 +96,8 @@ namespace LdapSearch.Tests
     {
       // Arrange
       var ldapHandler = Substitute.For<ILdapHandler>();
-
       var wasCalled = false;
+
       var mainWindowViewModel = new MainWindowViewModel(ldapHandler);
       mainWindowViewModel.PropertyChanged += (sender, args) => wasCalled = true;
 
