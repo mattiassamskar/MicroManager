@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LdapSearch", "LdapSearch\LdapSearch.csproj", "{DA2A9CC7-5F3D-4922-8FA3-2D8A5F1EBFBB}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "LdapSearchSetup", "Setup\LdapSearchSetup.wixproj", "{B494B7D8-6390-40E7-8F00-AF6A0B9EA4A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LdapSearch.Tests", "LdapSearch.Tests\LdapSearch.Tests.csproj", "{FE508820-FEDE-4086-8015-35E9A3EC73F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,18 @@ Global
 		{B494B7D8-6390-40E7-8F00-AF6A0B9EA4A1}.Release|Mixed Platforms.Build.0 = Release|x86
 		{B494B7D8-6390-40E7-8F00-AF6A0B9EA4A1}.Release|x86.ActiveCfg = Release|x86
 		{B494B7D8-6390-40E7-8F00-AF6A0B9EA4A1}.Release|x86.Build.0 = Release|x86
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Debug|x86.Build.0 = Debug|Any CPU
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Release|x86.ActiveCfg = Release|Any CPU
+		{FE508820-FEDE-4086-8015-35E9A3EC73F7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
