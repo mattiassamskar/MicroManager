@@ -3,7 +3,7 @@ using System.Windows.Media.Imaging;
 
 namespace LdapSearch
 {
-  public class ImageHandler
+  public class ImageHandler : IImageHandler
   {
     public BitmapImage ConvertBytesToBitmapImage(byte[] bytes)
     {

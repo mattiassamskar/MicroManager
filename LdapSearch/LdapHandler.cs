@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace LdapSearch
 {
-  public class LdapHandler
+  public class LdapHandler : ILdapHandler
   {
-    private readonly ImageHandler imageHandler;
+    private readonly IImageHandler imageHandler_;
 
-    public LdapHandler(ImageHandler imageHandler)
+    public LdapHandler(IImageHandler imageHandler)
     {
-      this.imageHandler = imageHandler;
+      imageHandler_ = imageHandler;
     }
 
     public IEnumerable<User> Search(string searchString)
@@ -28,7 +28,7 @@ namespace LdapSearch
                          SamAccountName = searchResult.SafeGetProperty<string>("sAMAccountName"),
                          DisplayName = searchResult.SafeGetProperty<string>("displayName"),
                          DistinguishedName = searchResult.SafeGetProperty<string>("distinguishedName"),
-                         Image = imageHandler.ConvertBytesToBitmapImage(searchResult.SafeGetProperty<byte[]>("thumbnailPhoto")),
+                         Image = imageHandler_.ConvertBytesToBitmapImage(searchResult.SafeGetProperty<byte[]>("thumbnailPhoto")),
                        };
 
           GetLdapNames(searchResult.SafeGetListProperty<string>("memberOf"))
