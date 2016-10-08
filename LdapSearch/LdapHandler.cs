@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
 
@@ -7,67 +6,46 @@ namespace LdapSearch
 {
   public class LdapHandler : ILdapHandler
   {
-    private readonly IImageHandler imageHandler_;
+    private readonly IImageHandler _imageHandler;
 
     public LdapHandler(IImageHandler imageHandler)
     {
-      imageHandler_ = imageHandler;
+      _imageHandler = imageHandler;
     }
 
-    public IEnumerable<User> Search(string searchString)
+    public IEnumerable<User> GetUsers(string searchString)
     {
-      var users = new List<User>();
-
-      using (var directorySearcher = CreateDirectorySearcher(searchString))
+      using (var directorySearcher = new DirectorySearcher(new DirectoryEntry()))
       {
-        foreach (SearchResult searchResult in directorySearcher.FindAll())
-        {
-          var user = new User
-                       {
-                         Cn = searchResult.SafeGetProperty<string>("cn"),
-                         SamAccountName = searchResult.SafeGetProperty<string>("sAMAccountName"),
-                         DisplayName = searchResult.SafeGetProperty<string>("displayName"),
-                         DistinguishedName = searchResult.SafeGetProperty<string>("distinguishedName"),
-                         Image = imageHandler_.ConvertBytesToBitmapImage(searchResult.SafeGetProperty<byte[]>("thumbnailPhoto")),
-                       };
-
-          GetLdapNames(searchResult.SafeGetListProperty<string>("memberOf"))
-            .ToList()
-            .ForEach(user.MemberOf.Add);
-
-          users.Add(user);
-        }
+        directorySearcher.Filter = "(|(sAMAccountName=" + searchString + ")(cn=" + searchString + "))";
+        directorySearcher.PropertiesToLoad.AddRange(new[] { "cn", "sAMAccountName", "displayName", "distinguishedName", "thumbnailPhoto", "memberOf" });
+        return directorySearcher.FindAll().Cast<SearchResult>().Select(CreateUserFromSearchResult);
       }
-      return users;
     }
 
-    private DirectorySearcher CreateDirectorySearcher(string searchString)
+    private User CreateUserFromSearchResult(SearchResult searchResult)
     {
-      var directorySearcher = new DirectorySearcher(new DirectoryEntry());
-      directorySearcher.Filter = "(|(sAMAccountName=" + searchString + ")(cn=" + searchString + "))";
-      directorySearcher.PropertiesToLoad.Add("cn");
-      directorySearcher.PropertiesToLoad.Add("sAMAccountName");
-      directorySearcher.PropertiesToLoad.Add("displayName");
-      directorySearcher.PropertiesToLoad.Add("distinguishedName");
-      directorySearcher.PropertiesToLoad.Add("thumbnailPhoto");
-      directorySearcher.PropertiesToLoad.Add("memberOf");
-
-      return directorySearcher;
+      return new User
+      {
+        Cn = searchResult.SafeGetProperty<string>("cn"),
+        SamAccountName = searchResult.SafeGetProperty<string>("sAMAccountName"),
+        DisplayName = searchResult.SafeGetProperty<string>("displayName"),
+        DistinguishedName = searchResult.SafeGetProperty<string>("distinguishedName"),
+        Image = _imageHandler.ConvertBytesToBitmapImage(searchResult.SafeGetProperty<byte[]>("thumbnailPhoto")),
+        MemberOf = GetNamesFromDistinguishedNames(searchResult.SafeGetListProperty<string>("memberOf")).ToList()
+      };
     }
 
-    private IEnumerable<string> GetLdapNames(IEnumerable distinguishedNames)
+    private IEnumerable<string> GetNamesFromDistinguishedNames(IEnumerable<string> distinguishedNames)
     {
-      return distinguishedNames != null ? distinguishedNames.Cast<string>().Select(GetLdapName) : new string[0];
-    }
-
-    private string GetLdapName(string distinguishedName)
-    {
-      using (var entry = new DirectoryEntry())
-      using (var directorySearcher = new DirectorySearcher(entry) { Filter = "distinguishedName=" + distinguishedName })
+      using (var directorySearcher = new DirectorySearcher(new DirectoryEntry()))
       {
         directorySearcher.PropertiesToLoad.Add("name");
-        var searchResult = directorySearcher.FindOne();
-        return searchResult.SafeGetProperty<string>("name");
+        return distinguishedNames.Select(distinguishedName =>
+        {
+          directorySearcher.Filter = "distinguishedName=" + distinguishedName;
+          return directorySearcher.FindOne().SafeGetProperty<string>("name");
+        }).ToList();
       }
     }
   }

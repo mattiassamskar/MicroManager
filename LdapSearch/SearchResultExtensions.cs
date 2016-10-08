@@ -18,7 +18,7 @@ namespace LdapSearch
 
     public static IEnumerable<T> SafeGetListProperty<T>(this SearchResult searchResult, string propertyName)
     {
-      return searchResult.HasProperty(propertyName) ? searchResult.Properties[propertyName].Cast<T>() : null;
+      return searchResult.HasProperty(propertyName) ? searchResult.Properties[propertyName].Cast<T>() : new List<T>();
     }
   }
 }

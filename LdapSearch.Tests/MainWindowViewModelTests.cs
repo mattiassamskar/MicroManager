@@ -18,7 +18,7 @@ namespace LdapSearch.Tests
       mainWindowViewModel.SearchCommandExecuted();
 
       // Assert
-      ldapHandler.DidNotReceive().Search(Arg.Any<string>());
+      ldapHandler.DidNotReceive().GetUsers(Arg.Any<string>());
     }
 
     [Fact]
@@ -26,7 +26,7 @@ namespace LdapSearch.Tests
     {
       // Arrange
       var ldapHandler = Substitute.For<ILdapHandler>();
-      ldapHandler.Search(Arg.Any<string>()).Returns(new List<User> { new User { SamAccountName = "b" } });
+      ldapHandler.GetUsers(Arg.Any<string>()).Returns(new List<User> { new User { SamAccountName = "b" } });
 
       var mainWindowViewModel = new MainWindowViewModel(ldapHandler);
       mainWindowViewModel.SearchString = "some string";
@@ -52,9 +52,9 @@ namespace LdapSearch.Tests
       mainWindowViewModel.SearchCommandExecuted();
 
       // Assert
-      ldapHandler.Received().Search("a");
-      ldapHandler.Received().Search("b");
-      ldapHandler.Received().Search("c");
+      ldapHandler.Received().GetUsers("a");
+      ldapHandler.Received().GetUsers("b");
+      ldapHandler.Received().GetUsers("c");
     }
 
     [Fact]
@@ -62,7 +62,7 @@ namespace LdapSearch.Tests
     {
       // Arrange
       var ldapHandler = Substitute.For<ILdapHandler>();
-      ldapHandler.Search(Arg.Any<string>()).Returns(new List<User> { new User { SamAccountName = "a" }, new User { SamAccountName = "b" } });
+      ldapHandler.GetUsers(Arg.Any<string>()).Returns(new List<User> { new User { SamAccountName = "a" }, new User { SamAccountName = "b" } });
 
       var mainWindowViewModel = new MainWindowViewModel(ldapHandler);
       mainWindowViewModel.SearchString = "some string";

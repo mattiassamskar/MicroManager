@@ -4,6 +4,6 @@ namespace LdapSearch
 {
   public interface ILdapHandler
   {
-    IEnumerable<User> Search(string searchString);
+    IEnumerable<User> GetUsers(string searchString);
   }
 }

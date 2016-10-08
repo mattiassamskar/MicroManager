@@ -57,7 +57,7 @@ namespace LdapSearch
 
       Users.Clear();
       var searchStrings = SearchString.Split(new[] { ';', ',' }).ToList();
-      searchStrings.ForEach(s => ldapHandler_.Search(s).ToList().ForEach(Users.Add));
+      searchStrings.ForEach(s => ldapHandler_.GetUsers(s).ToList().ForEach(Users.Add));
       SelectedUser = Users.FirstOrDefault();
     }
 
