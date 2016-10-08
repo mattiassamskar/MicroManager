@@ -84,7 +84,7 @@
     <Compile Include="ILdapHandler.cs" />
     <Compile Include="ImageHandler.cs" />
     <Compile Include="LdapHandler.cs" />
-    <Compile Include="MyExtensions.cs" />
+    <Compile Include="SearchResultExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="User.cs" />
     <Compile Include="ViewModelBase.cs" />

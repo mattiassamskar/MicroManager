@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace LdapSearch
 {
-  public static class MyExtensions
+  public static class SearchResultExtensions
   {
     public static bool HasProperty(this SearchResult searchResult, string propertyName)
     {
