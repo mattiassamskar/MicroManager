@@ -11,10 +11,5 @@ namespace LdapSearch
     public string DisplayName { get; set; }
     public BitmapImage Image { get; set; }
     public List<string> MemberOf { get; set; }
-
-    public User()
-    {
-      MemberOf = new List<string>();
-    }
   }
 }
