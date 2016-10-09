@@ -23,7 +23,7 @@ namespace LdapSearch
           "cn",
           "sAMAccountName",
           "displayName",
-          "distinguishedName"
+          "distinguishedName",
           "thumbnailPhoto",
           "memberOf"
         });
