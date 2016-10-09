@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
 
@@ -19,14 +19,14 @@ namespace LdapSearch
       {
         directorySearcher.Filter = "(|(sAMAccountName=" + searchString + ")(cn=" + searchString + "))";
         directorySearcher.PropertiesToLoad.AddRange(new[]
-          {
-            "cn",
-            "sAMAccountName",
-            "displayName",
-            "distinguishedName",
-            "thumbnailPhoto",
-            "memberOf"
-          });
+        {
+          "cn",
+          "sAMAccountName",
+          "displayName",
+          "distinguishedName"
+          "thumbnailPhoto",
+          "memberOf"
+        });
 
         return directorySearcher.FindAll()
                                 .Cast<SearchResult>()
