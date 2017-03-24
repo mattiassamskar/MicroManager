@@ -42,7 +42,7 @@ namespace LdapSearch
       if (string.IsNullOrEmpty(SearchString)) return;
 
       MyServices.Clear();
-      serviceHandler.GetServices(SearchString).ToList().ForEach(s => MyServices.Add(new MyService { Name = s }));
+      serviceHandler.GetServices(SearchString).ToList().ForEach(s => MyServices.Add(s));
     }
 
     private bool SearchCommandCanExecute()

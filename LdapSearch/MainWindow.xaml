@@ -2,7 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wpf="clr-namespace:LdapSearch"
-        Style="{DynamicResource MyStyle}" Title="LdapSearch" Height="600" Width="500" Icon="LdapSearch.ico">
+        Title="LdapSearch"
+        Width="500"
+        Height="600"
+        Icon="LdapSearch.ico"
+        Style="{DynamicResource MyStyle}">
 
   <Window.Resources>
     <Style x:Key="MyStyle" TargetType="{x:Type Control}">
@@ -11,7 +15,7 @@
       <Setter Property="Background" Value="Silver" />
     </Style>
   </Window.Resources>
-    
+
   <Grid FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}">
     <Grid.RowDefinitions>
       <RowDefinition Height="40" />
@@ -23,13 +27,35 @@
       <ColumnDefinition Width="100" />
     </Grid.ColumnDefinitions>
 
-    <TextBox Grid.Row="0" Grid.Column="0" Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" Name="SearchTextBox" VerticalContentAlignment="Center" Margin="5">
+    <TextBox Name="SearchTextBox"
+             Grid.Row="0"
+             Grid.Column="0"
+             Margin="5"
+             VerticalContentAlignment="Center"
+             Text="{Binding SearchString,
+                            UpdateSourceTrigger=PropertyChanged}">
       <TextBox.InputBindings>
-        <KeyBinding Command="{Binding SearchCommand}" Key="Enter" />
+        <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
       </TextBox.InputBindings>
     </TextBox>
-    <Button Grid.Row="0" Grid.Column="1" Content="Search" Command="{Binding SearchCommand}" Margin="5" />
+    <Button Grid.Row="0"
+            Grid.Column="1"
+            Margin="5"
+            Command="{Binding SearchCommand}"
+            Content="Search" />
 
-    <ListBox Grid.Row="2" Grid.Column="0" ItemsSource="{Binding MyServices}" DisplayMemberPath="Name" Margin="5" />
+    <ListBox Grid.Row="2"
+             Grid.Column="0"
+             Margin="5"
+             ItemsSource="{Binding MyServices}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal">
+            <Label Content="{Binding Name}" />
+            <Label Content="{Binding Status}" />
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
   </Grid>
 </Window>

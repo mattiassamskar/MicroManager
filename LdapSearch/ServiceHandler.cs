@@ -9,7 +9,7 @@ namespace LdapSearch
   {
     void RegisterEventWatcher(Action<MyService> callbackAction);
 
-    IEnumerable<string> GetServices(string filter);
+    IEnumerable<MyService> GetServices(string filter);
 
     void StartServices();
 
@@ -49,7 +49,7 @@ namespace LdapSearch
       action(myService);
     }
 
-    public IEnumerable<string> GetServices(string filter)
+    public IEnumerable<MyService> GetServices(string filter)
     {
       var windowsServicesSearcher = new ManagementObjectSearcher(
         "root\\cimv2",
@@ -57,7 +57,12 @@ namespace LdapSearch
       var managementObjectCollection = windowsServicesSearcher.Get();
 
       return from ManagementBaseObject managementBaseObject in managementObjectCollection
-             select managementBaseObject["Name"].ToString();
+             select
+             new MyService
+               {
+                 Name = managementBaseObject["Name"].ToString(),
+                 Status = managementBaseObject["State"].ToString()
+               };
     }
 
     public void StartServices()
