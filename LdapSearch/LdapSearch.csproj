@@ -102,6 +102,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="IServiceHandler.cs" />
+    <Compile Include="MyService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ServiceHandler.cs" />
     <Compile Include="ViewModelBase.cs" />

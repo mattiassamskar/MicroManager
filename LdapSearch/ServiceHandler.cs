@@ -7,35 +7,22 @@ namespace LdapSearch
 {
   using System.Reactive.Subjects;
 
-  public interface IServiceHandler
-  {
-    Subject<MyService> MyServiceObservable { get; set; }
-
-    void RegisterEventWatcher();
-
-    IEnumerable<MyService> GetServices(string filter);
-
-    void StartServices();
-
-    void StopServices();
-  }
-
   public class ServiceHandler : IDisposable, IServiceHandler
   {
     public Subject<MyService> MyServiceObservable { get; set; }
 
-    private ManagementEventWatcher eventWatcher;
+    private ManagementEventWatcher _eventWatcher;
 
     public void RegisterEventWatcher()
     {
       MyServiceObservable = new Subject<MyService>();
 
-      eventWatcher =
+      _eventWatcher =
         new ManagementEventWatcher(
           new WqlEventQuery(
             "SELECT * FROM __InstanceModificationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Service'"));
-      eventWatcher.EventArrived += EventWatcherOnEventArrived;
-      eventWatcher.Start();
+      _eventWatcher.EventArrived += EventWatcherOnEventArrived;
+      _eventWatcher.Start();
   }
 
     private void EventWatcherOnEventArrived(object sender, EventArrivedEventArgs eventArrivedEventArgs)
@@ -83,14 +70,7 @@ namespace LdapSearch
 
     public void Dispose()
     {
-      eventWatcher?.Stop();
+      _eventWatcher?.Stop();
     }
-  }
-
-  public class MyService
-  {
-    public string Name { get; set; }
-
-    public string Status { get; set; }
   }
 }

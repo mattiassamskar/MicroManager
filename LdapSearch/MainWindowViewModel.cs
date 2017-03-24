@@ -10,23 +10,23 @@ namespace LdapSearch
 
   public class MainWindowViewModel : ViewModelBase
   {
-    private readonly IServiceHandler serviceHandler;
+    private readonly IServiceHandler _serviceHandler;
     
-    private string searchString;
+    private string _searchString;
 
     public MainWindowViewModel(IServiceHandler serviceHandler)
     {
-      this.serviceHandler = serviceHandler;
-      this.MyServices = new ObservableCollection<MyService>();
+      _serviceHandler = serviceHandler;
+      MyServices = new ObservableCollection<MyService>();
       SearchCommand = new RelayCommand(SearchCommandCanExecute, SearchCommandExecuted);
 
-      this.serviceHandler.RegisterEventWatcher();
-      this.serviceHandler.MyServiceObservable.Subscribe(
+      _serviceHandler.RegisterEventWatcher();
+      _serviceHandler.MyServiceObservable.Subscribe(
         service =>
           {
             var myService = MyServices.SingleOrDefault(s => s.Name == service.Name);
             if (myService == null) return;
-            myService.Status = service.Status; // TODO: Must notify ui
+            myService.Status = service.Status;
           });
     }
 
@@ -38,11 +38,11 @@ namespace LdapSearch
     {
       get
       {
-        return searchString;
+        return _searchString;
       }
       set
       {
-        searchString = value;
+        _searchString = value;
         OnPropertyChanged();
         SearchCommand.RaiseCanExecuteChanged();
       }
@@ -53,7 +53,7 @@ namespace LdapSearch
       if (string.IsNullOrEmpty(SearchString)) return;
 
       MyServices.Clear();
-      serviceHandler.GetServices(SearchString).ToList().ForEach(s => MyServices.Add(s));
+      _serviceHandler.GetServices(SearchString).ToList().ForEach(s => MyServices.Add(s));
     }
 
     private bool SearchCommandCanExecute()

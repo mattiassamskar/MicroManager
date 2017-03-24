@@ -7,29 +7,28 @@ namespace LdapSearch
   {
     public RelayCommand(Func<bool> canExecute, Action execute)
     {
-      this.canExecute = canExecute;
-      this.execute = execute;
+      _canExecute = canExecute;
+      _execute = execute;
     }
 
-    private readonly Func<bool> canExecute;
-    private readonly Action execute;
+    private readonly Func<bool> _canExecute;
+    private readonly Action _execute;
 
     public bool CanExecute(object parameter)
     {
-      return canExecute();
+      return _canExecute();
     }
 
     public void Execute(object parameter)
     {
-      execute();
+      _execute();
     }
 
     public event EventHandler CanExecuteChanged;
 
     public void RaiseCanExecuteChanged()
     {
-      if (CanExecuteChanged != null)
-        CanExecuteChanged(this, EventArgs.Empty);
+      CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
   }
 }
