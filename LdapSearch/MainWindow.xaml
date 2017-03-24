@@ -30,20 +30,6 @@
     </TextBox>
     <Button Grid.Row="0" Grid.Column="1" Content="Search" Command="{Binding SearchCommand}" Margin="5" />
 
-    <ComboBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}" ToolTip="{Binding SelectedUser.DistinguishedName}" VerticalContentAlignment="Center" Margin="5" >
-      <ComboBox.ItemTemplate>
-        <DataTemplate>
-          <WrapPanel ToolTip="{Binding DistinguishedName}">
-            <TextBlock Text="{Binding Cn}" FontWeight="Black"/>
-            <TextBlock Text=" (" />
-            <TextBlock Text="{Binding SamAccountName}" />
-            <TextBlock Text=")" />
-          </WrapPanel>
-        </DataTemplate>
-      </ComboBox.ItemTemplate>
-    </ComboBox>
-
-    <ListBox Grid.Row="2" Grid.Column="0" ItemsSource="{Binding SelectedUser.MemberOf}" Margin="5" />
-    <Image Grid.Row="2" Grid.Column="1" Source="{Binding SelectedUser.Image}" VerticalAlignment="Top" Margin="5" />
+    <ListBox Grid.Row="2" Grid.Column="0" ItemsSource="{Binding MyServices}" DisplayMemberPath="Name" Margin="5" />
   </Grid>
 </Window>

@@ -18,7 +18,7 @@ namespace LdapSearch
 
       container.Register<MainWindow>();
       container.Register<MainWindowViewModel>();
-      container.Register<ILdapHandler, LdapHandler>(Lifestyle.Singleton);
+      container.Register<IServiceHandler, ServiceHandler>(Lifestyle.Singleton);
       container.Register<IImageHandler, ImageHandler>(Lifestyle.Singleton);
 
       container.Verify();

@@ -8,19 +8,18 @@ namespace LdapSearch
 {
   public class MainWindowViewModel : ViewModelBase
   {
-    private readonly ILdapHandler ldapHandler_;
+    private readonly IServiceHandler serviceHandler;
     
     private string searchString;
-    private User selectedUser;
 
-    public MainWindowViewModel(ILdapHandler ldapHandler)
+    public MainWindowViewModel(IServiceHandler serviceHandler)
     {
-      ldapHandler_ = ldapHandler;
-      Users = new ObservableCollection<User>();
+      this.serviceHandler = serviceHandler;
+      this.MyServices = new ObservableCollection<MyService>();
       SearchCommand = new RelayCommand(SearchCommandCanExecute, SearchCommandExecuted);
     }
 
-    public ObservableCollection<User> Users { get; set; }
+    public ObservableCollection<MyService> MyServices { get; set; }
 
     public RelayCommand SearchCommand { get; set; }
 
@@ -38,27 +37,12 @@ namespace LdapSearch
       }
     }
 
-    public User SelectedUser
-    {
-      get
-      {
-        return selectedUser;
-      }
-      set
-      {
-        selectedUser = value;
-        OnPropertyChanged();
-      }
-    }
-
     internal void SearchCommandExecuted()
     {
       if (string.IsNullOrEmpty(SearchString)) return;
 
-      Users.Clear();
-      var searchStrings = SearchString.Split(new[] { ';', ',' }).ToList();
-      searchStrings.ForEach(s => ldapHandler_.GetUsers(s).ToList().ForEach(Users.Add));
-      SelectedUser = Users.FirstOrDefault();
+      MyServices.Clear();
+      serviceHandler.GetServices(SearchString).ToList().ForEach(s => MyServices.Add(new MyService { Name = s }));
     }
 
     private bool SearchCommandCanExecute()

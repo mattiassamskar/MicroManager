@@ -30,14 +30,14 @@ namespace LdapSearch.Tests
 
       var mainWindowViewModel = new MainWindowViewModel(ldapHandler);
       mainWindowViewModel.SearchString = "some string";
-      mainWindowViewModel.Users.Add(new User { SamAccountName = "a" });
+      mainWindowViewModel.MyServices.Add(new User { SamAccountName = "a" });
 
       // Act
       mainWindowViewModel.SearchCommandExecuted();
 
       // Assert
-      Assert.True(mainWindowViewModel.Users.Count == 1);
-      Assert.True(mainWindowViewModel.Users[0].SamAccountName == "b");
+      Assert.True(mainWindowViewModel.MyServices.Count == 1);
+      Assert.True(mainWindowViewModel.MyServices[0].SamAccountName == "b");
     }
 
     [Fact]

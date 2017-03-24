@@ -3,9 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 
-namespace MicroManager
+namespace LdapSearch
 {
-  public class ServiceHandler : IDisposable
+  public interface IServiceHandler
+  {
+    void RegisterEventWatcher(Action<MyService> callbackAction);
+
+    IEnumerable<string> GetServices(string filter);
+
+    void StartServices();
+
+    void StopServices();
+  }
+
+  public class ServiceHandler : IDisposable, IServiceHandler
   {
     private ManagementEventWatcher eventWatcher;
 
