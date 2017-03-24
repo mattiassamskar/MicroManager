@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -6,40 +7,35 @@ using System.Runtime.CompilerServices;
 
 namespace LdapSearch
 {
-  using System;
-
   public class MainWindowViewModel : ViewModelBase
   {
     private readonly IServiceHandler _serviceHandler;
-    
+
     private string _searchString;
 
     public MainWindowViewModel(IServiceHandler serviceHandler)
     {
-      _serviceHandler = serviceHandler;
-      MyServices = new ObservableCollection<MyService>();
+      ServiceInfoViewModels = new ObservableCollection<ServiceInfoViewModel>();
       SearchCommand = new RelayCommand(SearchCommandCanExecute, SearchCommandExecuted);
 
+      _serviceHandler = serviceHandler;
       _serviceHandler.RegisterEventWatcher();
-      _serviceHandler.MyServiceObservable.Subscribe(
+      _serviceHandler.ServiceInfoObservable.Subscribe(
         service =>
-          {
-            var myService = MyServices.SingleOrDefault(s => s.Name == service.Name);
-            if (myService == null) return;
-            myService.Status = service.Status;
-          });
+        {
+          var myService = ServiceInfoViewModels.SingleOrDefault(s => s.Name == service.Name);
+          if (myService == null) return;
+          myService.State = service.State;
+        });
     }
 
-    public ObservableCollection<MyService> MyServices { get; set; }
+    public ObservableCollection<ServiceInfoViewModel> ServiceInfoViewModels { get; set; }
 
     public RelayCommand SearchCommand { get; set; }
 
     public string SearchString
     {
-      get
-      {
-        return _searchString;
-      }
+      get { return _searchString; }
       set
       {
         _searchString = value;
@@ -52,8 +48,10 @@ namespace LdapSearch
     {
       if (string.IsNullOrEmpty(SearchString)) return;
 
-      MyServices.Clear();
-      _serviceHandler.GetServices(SearchString).ToList().ForEach(s => MyServices.Add(s));
+      ServiceInfoViewModels.Clear();
+      _serviceHandler.GetServices(SearchString)
+        .ToList()
+        .ForEach(s => ServiceInfoViewModels.Add(new ServiceInfoViewModel {Name = s.Name, State = s.State}));
     }
 
     private bool SearchCommandCanExecute()

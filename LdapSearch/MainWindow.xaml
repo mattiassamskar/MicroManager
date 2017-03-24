@@ -47,12 +47,12 @@
     <ListBox Grid.Row="2"
              Grid.Column="0"
              Margin="5"
-             ItemsSource="{Binding MyServices}">
+             ItemsSource="{Binding ServiceInfoViewModels}">
       <ListBox.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal">
             <Label Content="{Binding Name}" />
-            <Label Content="{Binding Status}" />
+            <Label Content="{Binding State}" />
           </StackPanel>
         </DataTemplate>
       </ListBox.ItemTemplate>

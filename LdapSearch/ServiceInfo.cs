@@ -1,9 +1,9 @@
 ﻿namespace LdapSearch
 {
-  public class MyService
+  public class ServiceInfo
   {
     public string Name { get; set; }
 
-    public string Status { get; set; }
+    public string State { get; set; }
   }
 }

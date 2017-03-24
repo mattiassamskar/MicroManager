@@ -5,11 +5,11 @@ namespace LdapSearch
 {
   public interface IServiceHandler
   {
-    Subject<MyService> MyServiceObservable { get; set; }
+    Subject<ServiceInfo> ServiceInfoObservable { get; set; }
 
     void RegisterEventWatcher();
 
-    IEnumerable<MyService> GetServices(string filter);
+    IEnumerable<ServiceInfo> GetServices(string filter);
 
     void StartServices();
 
