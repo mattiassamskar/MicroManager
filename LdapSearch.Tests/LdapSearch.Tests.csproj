@@ -64,8 +64,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainWindowViewModelTests.cs" />
-    <Compile Include="ImageHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

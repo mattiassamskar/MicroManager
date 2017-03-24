@@ -102,14 +102,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="IImageHandler.cs" />
-    <Compile Include="ILdapHandler.cs" />
-    <Compile Include="ImageHandler.cs" />
-    <Compile Include="LdapHandler.cs" />
-    <Compile Include="SearchResultExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ServiceHandler.cs" />
-    <Compile Include="User.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
