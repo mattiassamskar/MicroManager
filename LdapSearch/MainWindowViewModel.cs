@@ -6,6 +6,8 @@ using System.Runtime.CompilerServices;
 
 namespace LdapSearch
 {
+  using System;
+
   public class MainWindowViewModel : ViewModelBase
   {
     private readonly IServiceHandler serviceHandler;
@@ -17,6 +19,15 @@ namespace LdapSearch
       this.serviceHandler = serviceHandler;
       this.MyServices = new ObservableCollection<MyService>();
       SearchCommand = new RelayCommand(SearchCommandCanExecute, SearchCommandExecuted);
+
+      this.serviceHandler.RegisterEventWatcher();
+      this.serviceHandler.MyServiceObservable.Subscribe(
+        service =>
+          {
+            var myService = MyServices.SingleOrDefault(s => s.Name == service.Name);
+            if (myService == null) return;
+            myService.Status = service.Status; // TODO: Must notify ui
+          });
     }
 
     public ObservableCollection<MyService> MyServices { get; set; }

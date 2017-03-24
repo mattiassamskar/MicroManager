@@ -5,9 +5,13 @@ using System.Management;
 
 namespace LdapSearch
 {
+  using System.Reactive.Subjects;
+
   public interface IServiceHandler
   {
-    void RegisterEventWatcher(Action<MyService> callbackAction);
+    Subject<MyService> MyServiceObservable { get; set; }
+
+    void RegisterEventWatcher();
 
     IEnumerable<MyService> GetServices(string filter);
 
@@ -18,35 +22,37 @@ namespace LdapSearch
 
   public class ServiceHandler : IDisposable, IServiceHandler
   {
+    public Subject<MyService> MyServiceObservable { get; set; }
+
     private ManagementEventWatcher eventWatcher;
 
-    private Action<MyService> action;
-
-    public void RegisterEventWatcher(Action<MyService> callbackAction)
+    public void RegisterEventWatcher()
     {
-      action = callbackAction;
+      MyServiceObservable = new Subject<MyService>();
+
       eventWatcher =
         new ManagementEventWatcher(
           new WqlEventQuery(
             "SELECT * FROM __InstanceModificationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Service'"));
       eventWatcher.EventArrived += EventWatcherOnEventArrived;
       eventWatcher.Start();
-    }
+  }
 
     private void EventWatcherOnEventArrived(object sender, EventArrivedEventArgs eventArrivedEventArgs)
     {
       var myService = new MyService
-      {
-        Name =
+                        {
+                          Name =
                             ((ManagementBaseObject)
                               eventArrivedEventArgs.NewEvent.Properties["TargetInstance"].Value)["Name"]
                             .ToString(),
-        Status =
+                          Status =
                             ((ManagementBaseObject)
                               eventArrivedEventArgs.NewEvent.Properties["TargetInstance"].Value)["State"]
                             .ToString()
-      };
-      action(myService);
+                        };
+
+      MyServiceObservable.OnNext(myService);
     }
 
     public IEnumerable<MyService> GetServices(string filter)
