@@ -63,6 +63,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -86,6 +87,7 @@
     <Compile Include="LdapHandler.cs" />
     <Compile Include="SearchResultExtensions.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ServiceHandler.cs" />
     <Compile Include="User.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
