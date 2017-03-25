@@ -11,8 +11,12 @@ namespace MicroManager
 
     IEnumerable<ServiceInfo> GetServices(string filter);
 
-    void StartServices();
+    void StartServices(List<string> names);
 
-    void StopServices();
+    void StopServices(List<string> names);
+
+    void StopService(string name);
+
+    void StartService(string name);
   }
 }

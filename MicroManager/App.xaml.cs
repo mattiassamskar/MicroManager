@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace LdapSearch
+namespace MicroManager
 {
   public partial class App : Application
   {

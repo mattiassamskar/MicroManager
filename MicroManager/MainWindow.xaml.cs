@@ -1,7 +1,6 @@
 ﻿using System.Windows;
-using MicroManager;
 
-namespace LdapSearch
+namespace MicroManager
 {
   public partial class MainWindow : Window
   {

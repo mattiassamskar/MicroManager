@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("LdapSearch.Tests")]
+[assembly: InternalsVisibleTo("MicroManager.Tests")]
 
 namespace MicroManager
 {
@@ -51,7 +51,8 @@ namespace MicroManager
       ServiceInfoViewModels.Clear();
       _serviceHandler.GetServices(SearchString)
         .ToList()
-        .ForEach(s => ServiceInfoViewModels.Add(new ServiceInfoViewModel {Name = s.Name, State = s.State}));
+        .ForEach(
+          s => ServiceInfoViewModels.Add(new ServiceInfoViewModel(_serviceHandler) {Name = s.Name, State = s.State}));
     }
 
     private bool SearchCommandCanExecute()

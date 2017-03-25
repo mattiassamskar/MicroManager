@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Management;
 using System.Reactive.Subjects;
+using System.ServiceProcess;
 
 namespace MicroManager
 {
-  public class ServiceHandler : IDisposable, IServiceHandler
+  public class ServiceHandler : IServiceHandler
   {
     public Subject<ServiceInfo> ServiceInfoObservable { get; set; } = new Subject<ServiceInfo>();
 
@@ -26,14 +27,28 @@ namespace MicroManager
         };
     }
 
-    public void StartServices()
+    public void StartServices(List<string> names)
     {
-      throw new NotImplementedException();
+      
     }
 
-    public void StopServices()
+    public void StopServices(List<string> names)
     {
-      throw new NotImplementedException();
+      
+    }
+
+    public void StartService(string name)
+    {
+      var service = new ServiceController(name);
+      service.Start();
+      service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10));
+    }
+
+    public void StopService(string name)
+    {
+      var service = new ServiceController(name);
+      service.Stop();
+      service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
     }
 
     public void RegisterEventWatcher()
@@ -44,11 +59,6 @@ namespace MicroManager
             "SELECT * FROM __InstanceModificationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Service'"));
       _eventWatcher.EventArrived += EventWatcherOnEventArrived;
       _eventWatcher.Start();
-    }
-
-    public void Dispose()
-    {
-      _eventWatcher?.Stop();
     }
 
     private void EventWatcherOnEventArrived(object sender, EventArrivedEventArgs eventArrivedEventArgs)

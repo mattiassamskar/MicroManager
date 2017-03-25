@@ -1,5 +1,4 @@
 ﻿using System;
-using LdapSearch;
 using SimpleInjector;
 
 namespace MicroManager
