@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace LdapSearch
+namespace MicroManager
 {
   public class RelayCommand : ICommand
   {

@@ -7,8 +7,8 @@
     <ProjectGuid>{DA2A9CC7-5F3D-4922-8FA3-2D8A5F1EBFBB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LdapSearch</RootNamespace>
-    <AssemblyName>LdapSearch</AssemblyName>
+    <RootNamespace>MicroManager</RootNamespace>
+    <AssemblyName>MicroManager</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -49,10 +49,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>LdapSearch.ico</ApplicationIcon>
+    <ApplicationIcon>MicroManager.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>LdapSearch.Program</StartupObject>
+    <StartupObject>MicroManager.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SimpleInjector, Version=3.1.2.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
@@ -151,7 +151,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="LdapSearch.ico" />
+    <Resource Include="MicroManager.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

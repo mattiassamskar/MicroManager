@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Management;
 using System.Reactive.Subjects;
 
-namespace LdapSearch
+namespace MicroManager
 {
   public class ServiceHandler : IDisposable, IServiceHandler
   {

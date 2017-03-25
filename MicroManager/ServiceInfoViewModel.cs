@@ -1,4 +1,4 @@
-﻿namespace LdapSearch
+﻿namespace MicroManager
 {
   public class ServiceInfoViewModel : ViewModelBase
   {

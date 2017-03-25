@@ -22,7 +22,7 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="LdapSearch.wxs" />
+    <Compile Include="MicroManager.wxs" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--

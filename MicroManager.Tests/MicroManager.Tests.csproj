@@ -70,7 +70,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LdapSearch\LdapSearch.csproj">
+    <ProjectReference Include="..\MicroManager\MicroManager.csproj">
       <Project>{da2a9cc7-5f3d-4922-8fa3-2d8a5f1ebfbb}</Project>
       <Name>LdapSearch</Name>
     </ProjectReference>

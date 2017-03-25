@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LdapSearch", "LdapSearch\LdapSearch.csproj", "{DA2A9CC7-5F3D-4922-8FA3-2D8A5F1EBFBB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroManager", "MicroManager\MicroManager.csproj", "{DA2A9CC7-5F3D-4922-8FA3-2D8A5F1EBFBB}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "LdapSearchSetup", "Setup\LdapSearchSetup.wixproj", "{B494B7D8-6390-40E7-8F00-AF6A0B9EA4A1}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "MicroManagerSetup", "Setup\MicroManagerSetup.wixproj", "{B494B7D8-6390-40E7-8F00-AF6A0B9EA4A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LdapSearch.Tests", "LdapSearch.Tests\LdapSearch.Tests.csproj", "{FE508820-FEDE-4086-8015-35E9A3EC73F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroManager.Tests", "MicroManager.Tests\MicroManager.Tests.csproj", "{FE508820-FEDE-4086-8015-35E9A3EC73F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

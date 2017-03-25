@@ -1,7 +1,8 @@
-﻿using SimpleInjector;
-using System;
+﻿using System;
+using LdapSearch;
+using SimpleInjector;
 
-namespace LdapSearch
+namespace MicroManager
 {
   public class Program
   {

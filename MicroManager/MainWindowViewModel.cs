@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("LdapSearch.Tests")]
 
-namespace LdapSearch
+namespace MicroManager
 {
   public class MainWindowViewModel : ViewModelBase
   {

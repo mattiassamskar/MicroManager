@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reactive.Subjects;
 
-namespace LdapSearch
+namespace MicroManager
 {
   public interface IServiceHandler
   {

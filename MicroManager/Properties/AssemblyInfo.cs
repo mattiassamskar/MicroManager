@@ -5,12 +5,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LdapSearch")]
-[assembly: AssemblyDescription("Search LDAP directories in a breeze!")]
+[assembly: AssemblyTitle("MicroManager")]
+[assembly: AssemblyDescription("Micromanage your Windows services")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Oh Snap! Development")]
-[assembly: AssemblyProduct("LdapSearch")]
-[assembly: AssemblyCopyright("Copyright © Oh Snap! Development 2014")]
+[assembly: AssemblyProduct("MicroManager")]
+[assembly: AssemblyCopyright("Copyright © Oh Snap! Development 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -49,5 +49,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.1.0.0")]
-[assembly: AssemblyFileVersion("2.1.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

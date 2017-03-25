@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace LdapSearch
+namespace MicroManager
 {
   public class ViewModelBase : INotifyPropertyChanged
   {

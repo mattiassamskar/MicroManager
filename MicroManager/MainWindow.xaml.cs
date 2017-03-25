@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using MicroManager;
 
 namespace LdapSearch
 {
