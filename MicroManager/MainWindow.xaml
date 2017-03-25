@@ -54,7 +54,7 @@
       <ListBox.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal">
-            <CheckBox Content="{Binding Enabled}" />
+            <CheckBox IsChecked="{Binding Enabled}" />
             <Label Content="{Binding Name}" />
             <Label Content="{Binding State}" />
             <Button Command="{Binding StartServiceCommand}" Content="Start" />

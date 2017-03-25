@@ -9,6 +9,8 @@ namespace MicroManager
 
     void RegisterEventWatcher();
 
+    void UnRegisterEventWatcher();
+
     IEnumerable<ServiceInfo> GetServices(string filter);
 
     void StartServices(List<string> names);

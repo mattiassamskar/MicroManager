@@ -61,6 +61,13 @@ namespace MicroManager
       _eventWatcher.Start();
     }
 
+    public void UnRegisterEventWatcher()
+    {
+      _eventWatcher.EventArrived -= EventWatcherOnEventArrived;
+      _eventWatcher.Stop();
+      _eventWatcher.Dispose();
+    }
+
     private void EventWatcherOnEventArrived(object sender, EventArrivedEventArgs eventArrivedEventArgs)
     {
       var managementBaseObject = (ManagementBaseObject)
