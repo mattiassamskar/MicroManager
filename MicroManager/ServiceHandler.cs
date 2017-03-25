@@ -40,6 +40,10 @@ namespace MicroManager
     public void StartService(string name)
     {
       var service = new ServiceController(name);
+
+      if (service.Status != ServiceControllerStatus.Stopped)
+        return;
+
       service.Start();
       service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10));
     }
@@ -47,6 +51,10 @@ namespace MicroManager
     public void StopService(string name)
     {
       var service = new ServiceController(name);
+
+      if (service.Status != ServiceControllerStatus.Running)
+        return;
+
       service.Stop();
       service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
     }

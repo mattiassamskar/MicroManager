@@ -53,8 +53,8 @@
              ItemsSource="{Binding ServiceInfoViewModels}">
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <StackPanel Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding Enabled}" />
+          <StackPanel Orientation="Horizontal" >
+            <CheckBox IsChecked="{Binding Enabled}" VerticalAlignment="Center" />
             <Label Content="{Binding Name}" />
             <Label Content="{Binding State}" />
             <Button Command="{Binding StartServiceCommand}" Content="Start" />
