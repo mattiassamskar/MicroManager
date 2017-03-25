@@ -15,6 +15,7 @@
       _serviceHandler = serviceHandler;
       StartServiceCommand = new RelayCommand(StartCommandCanExecute, StartCommandExecuted);
       StopServiceCommand = new RelayCommand(StopCommandCanExecute, StopCommandExecuted);
+      _enabled = true;
     }
 
     public RelayCommand StartServiceCommand { get; set; }

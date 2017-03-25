@@ -29,12 +29,12 @@ namespace MicroManager
 
     public void StartServices(List<string> names)
     {
-      
+      names.ForEach(StartService);
     }
 
     public void StopServices(List<string> names)
     {
-      
+      names.ForEach(StopService);
     }
 
     public void StartService(string name)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -17,6 +18,8 @@ namespace MicroManager
     {
       ServiceInfoViewModels = new ObservableCollection<ServiceInfoViewModel>();
       SearchCommand = new RelayCommand(SearchCommandCanExecute, SearchCommandExecuted);
+      StartServicesCommand = new RelayCommand(StartServicesCommandCanExecute, StartServicesCommandExecuted);
+      StopServicesCommand = new RelayCommand(StopServicesCommandCanExecute, StopServicesCommandExecuted);
 
       _serviceHandler = serviceHandler;
       _serviceHandler.RegisterEventWatcher();
@@ -32,6 +35,10 @@ namespace MicroManager
     public ObservableCollection<ServiceInfoViewModel> ServiceInfoViewModels { get; set; }
 
     public RelayCommand SearchCommand { get; set; }
+
+    public RelayCommand StartServicesCommand { get; set; }
+
+    public RelayCommand StopServicesCommand { get; set; }
 
     public string SearchString
     {
@@ -58,6 +65,31 @@ namespace MicroManager
     private bool SearchCommandCanExecute()
     {
       return true;
+    }
+
+    private void StartServicesCommandExecuted()
+    {
+      _serviceHandler.StartServices(EnabledServices());
+    }
+
+    private bool StartServicesCommandCanExecute()
+    {
+      return true;
+    }
+
+    private void StopServicesCommandExecuted()
+    {
+      _serviceHandler.StopServices(EnabledServices());
+    }
+
+    private bool StopServicesCommandCanExecute()
+    {
+      return true;
+    }
+
+    private List<string> EnabledServices()
+    {
+      return ServiceInfoViewModels.Where(si => si.Enabled).Select(s => s.Name).ToList();
     }
   }
 }
