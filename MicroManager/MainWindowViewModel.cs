@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("MicroManager.Tests")]
@@ -13,6 +14,8 @@ namespace MicroManager
     private readonly IServiceHandler _serviceHandler;
 
     private string _searchString;
+
+    private NotifyIconHandler _notifyIconHandler;
 
     public MainWindowViewModel(IServiceHandler serviceHandler)
     {
@@ -29,10 +32,17 @@ namespace MicroManager
           var myService = ServiceInfoViewModels.SingleOrDefault(s => s.Name == service.Name);
           if (myService == null) return;
           myService.State = service.State;
+          ServiceInfosObservable.OnNext(
+            ServiceInfoViewModels.Select(s => new ServiceInfo {Name = s.Name, State = s.State, Enabled = s.Enabled})
+              .ToList());
         });
+
+      _notifyIconHandler = new NotifyIconHandler(ServiceInfosObservable);
     }
 
     public ObservableCollection<ServiceInfoViewModel> ServiceInfoViewModels { get; set; }
+
+    public Subject<List<ServiceInfo>> ServiceInfosObservable { get; set; } = new Subject<List<ServiceInfo>>();
 
     public RelayCommand SearchCommand { get; set; }
 
@@ -53,13 +63,15 @@ namespace MicroManager
 
     internal void SearchCommandExecuted()
     {
-      if (string.IsNullOrEmpty(SearchString)) return;
-
       ServiceInfoViewModels.Clear();
       _serviceHandler.GetServices(SearchString)
         .ToList()
         .ForEach(
-          s => ServiceInfoViewModels.Add(new ServiceInfoViewModel(_serviceHandler) {Name = s.Name, State = s.State}));
+          s => ServiceInfoViewModels.Add(new ServiceInfoViewModel(_serviceHandler) { Name = s.Name, State = s.State }));
+
+      ServiceInfosObservable.OnNext(
+        ServiceInfoViewModels.Select(s => new ServiceInfo { Name = s.Name, State = s.State, Enabled = s.Enabled })
+          .ToList());
     }
 
     private bool SearchCommandCanExecute()
