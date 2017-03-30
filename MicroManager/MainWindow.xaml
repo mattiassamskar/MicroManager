@@ -78,9 +78,13 @@
                       IsEnabled="{Binding IsEnabled}" />
             <Button Command="{Binding StartServiceCommand}"
                     Content="▶"
+                    BorderThickness="0"
+                    Background="Transparent"
                     IsEnabled="{Binding IsEnabled}" />
             <Button Command="{Binding StopServiceCommand}"
                     Content="⏹"
+                    BorderThickness="0"
+                    Background="Transparent"
                     IsEnabled="{Binding IsEnabled}" />
             <Label Background="{Binding Background}" Content="{Binding Name}" />
           </StackPanel>
