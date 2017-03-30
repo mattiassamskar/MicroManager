@@ -35,8 +35,8 @@
                Grid.Column="0"
                Margin="5"
                VerticalContentAlignment="Center"
-               Text="{Binding SearchString,
-                            UpdateSourceTrigger=PropertyChanged}">
+               Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}"
+               IsEnabled="{Binding IsEnabled}">
         <TextBox.InputBindings>
           <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
         </TextBox.InputBindings>
@@ -45,6 +45,7 @@
               Grid.Column="1"
               Margin="5"
               Command="{Binding SearchCommand}"
+              IsEnabled="{Binding IsEnabled}"
               Content="Search" />
     </Grid>
     <ListBox Grid.Row="1"
@@ -54,11 +55,11 @@
       <ListBox.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal" >
-            <CheckBox IsChecked="{Binding Enabled}" VerticalAlignment="Center" />
+            <CheckBox IsChecked="{Binding Enabled}" IsEnabled="{Binding IsEnabled}" VerticalAlignment="Center" />
             <Label Content="{Binding Name}" />
             <Label Content="{Binding State}" />
-            <Button Command="{Binding StartServiceCommand}" Content="Start" />
-            <Button Command="{Binding StopServiceCommand}" Content="Stop" />
+            <Button Command="{Binding StartServiceCommand}" IsEnabled="{Binding IsEnabled}" Content="Start" />
+            <Button Command="{Binding StopServiceCommand}" IsEnabled="{Binding IsEnabled}" Content="Stop" />
           </StackPanel>
         </DataTemplate>
       </ListBox.ItemTemplate>
@@ -72,10 +73,12 @@
       <Button Grid.Column="0"
               Margin="5"
               Command="{Binding StartServicesCommand}"
+              IsEnabled="{Binding IsEnabled}"
               Content="Start all" />
       <Button Grid.Column="1"
               Margin="5"
               Command="{Binding StopServicesCommand}"
+              IsEnabled="{Binding IsEnabled}"
               Content="Stop all" />
     </Grid>
   </Grid>

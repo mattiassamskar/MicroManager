@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 [assembly: InternalsVisibleTo("MicroManager.Tests")]
 
@@ -15,6 +16,8 @@ namespace MicroManager
 
     private string _searchString;
 
+    private bool _isEnabled;
+
     private NotifyIconHandler _notifyIconHandler;
 
     public MainWindowViewModel(IServiceHandler serviceHandler)
@@ -23,6 +26,7 @@ namespace MicroManager
       SearchCommand = new RelayCommand(SearchCommandCanExecute, SearchCommandExecuted);
       StartServicesCommand = new RelayCommand(StartServicesCommandCanExecute, StartServicesCommandExecuted);
       StopServicesCommand = new RelayCommand(StopServicesCommandCanExecute, StopServicesCommandExecuted);
+      IsEnabled = true;
 
       _serviceHandler = serviceHandler;
       _serviceHandler.RegisterEventWatcher();
@@ -61,6 +65,19 @@ namespace MicroManager
       }
     }
 
+    public bool IsEnabled
+    {
+      get
+      {
+        return _isEnabled;
+      }
+      set
+      {
+        _isEnabled = value;
+        OnPropertyChanged();
+      }
+    }
+
     internal void SearchCommandExecuted()
     {
       ServiceInfoViewModels.Clear();
@@ -76,27 +93,51 @@ namespace MicroManager
 
     private bool SearchCommandCanExecute()
     {
-      return true;
+      return IsEnabled;
     }
 
-    private void StartServicesCommandExecuted()
+    private async void StartServicesCommandExecuted()
     {
-      _serviceHandler.StartServices(EnabledServices());
+      try
+      {
+        IsEnabled = false;
+        await _serviceHandler.StartServicesAsync(EnabledServices());
+      }
+      catch (Exception exception)
+      {
+        MessageBox.Show(exception.Message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+      finally
+      {
+        IsEnabled = true;
+      }
     }
 
     private bool StartServicesCommandCanExecute()
     {
-      return true;
+      return IsEnabled;
     }
 
-    private void StopServicesCommandExecuted()
+    private async void StopServicesCommandExecuted()
     {
-      _serviceHandler.StopServices(EnabledServices());
+      try
+      {
+        IsEnabled = false;
+        await _serviceHandler.StopServicesAsync(EnabledServices());
+      }
+      catch (Exception exception)
+      {
+        MessageBox.Show(exception.Message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+      finally
+      {
+        IsEnabled = true;
+      }
     }
 
     private bool StopServicesCommandCanExecute()
     {
-      return true;
+      return IsEnabled;
     }
 
     private List<string> EnabledServices()

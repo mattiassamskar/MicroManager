@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management;
 using System.Reactive.Subjects;
 using System.ServiceProcess;
+using System.Threading.Tasks;
 
 namespace MicroManager
 {
@@ -27,14 +29,26 @@ namespace MicroManager
         };
     }
 
-    public void StartServices(List<string> names)
+    public async Task StartServicesAsync(List<string> names)
     {
-      names.ForEach(StartService);
+      await Task.Run(() =>
+      {
+        Task.WaitAll(names.Select(name => Task.Run(() =>
+        {
+          StartService(name);
+        })).ToArray());
+      });
     }
 
-    public void StopServices(List<string> names)
+    public async Task StopServicesAsync(List<string> names)
     {
-      names.ForEach(StopService);
+      await Task.Run(() =>
+      {
+        Task.WaitAll(names.Select(name => Task.Run(() =>
+        {
+          names.ForEach(StopService);
+        })).ToArray());
+      });
     }
 
     public void StartService(string name)

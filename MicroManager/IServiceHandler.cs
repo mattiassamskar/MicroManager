@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reactive.Subjects;
+using System.Threading.Tasks;
 
 namespace MicroManager
 {
@@ -13,9 +14,9 @@ namespace MicroManager
 
     IEnumerable<ServiceInfo> GetServices(string filter);
 
-    void StartServices(List<string> names);
+    Task StartServicesAsync(List<string> names);
 
-    void StopServices(List<string> names);
+    Task StopServicesAsync(List<string> names);
 
     void StopService(string name);
 
