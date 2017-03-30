@@ -13,7 +13,6 @@ namespace MicroManager
     {
       _notifyIcon = new NotifyIcon
       {
-        Icon = Resource1.grey,
         Visible = true
       };
 
