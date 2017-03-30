@@ -1,4 +1,6 @@
-﻿namespace MicroManager
+﻿using System.Windows.Media;
+
+namespace MicroManager
 {
   public class ServiceInfoViewModel : ViewModelBase
   {
@@ -38,6 +40,7 @@
       set
       {
         OnPropertyChanged();
+        OnPropertyChanged("Background");
         _state = value;
       }
     }
@@ -51,6 +54,8 @@
         _enabled = value;
       }
     }
+
+    public SolidColorBrush Background => State == "Running" ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
 
     internal void StartCommandExecuted()
     {

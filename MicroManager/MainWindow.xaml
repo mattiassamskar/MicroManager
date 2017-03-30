@@ -35,8 +35,9 @@
                Grid.Column="0"
                Margin="5"
                VerticalContentAlignment="Center"
-               Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}"
-               IsEnabled="{Binding IsEnabled}">
+               IsEnabled="{Binding IsEnabled}"
+               Text="{Binding SearchString,
+                              UpdateSourceTrigger=PropertyChanged}">
         <TextBox.InputBindings>
           <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
         </TextBox.InputBindings>
@@ -45,25 +46,9 @@
               Grid.Column="1"
               Margin="5"
               Command="{Binding SearchCommand}"
-              IsEnabled="{Binding IsEnabled}"
-              Content="Search" />
+              Content="Search"
+              IsEnabled="{Binding IsEnabled}" />
     </Grid>
-    <ListBox Grid.Row="1"
-             Grid.Column="0"
-             Margin="5"
-             ItemsSource="{Binding ServiceInfoViewModels}">
-      <ListBox.ItemTemplate>
-        <DataTemplate>
-          <StackPanel Orientation="Horizontal" >
-            <CheckBox IsChecked="{Binding Enabled}" IsEnabled="{Binding IsEnabled}" VerticalAlignment="Center" />
-            <Label Content="{Binding Name}" />
-            <Label Content="{Binding State}" />
-            <Button Command="{Binding StartServiceCommand}" IsEnabled="{Binding IsEnabled}" Content="Start" />
-            <Button Command="{Binding StopServiceCommand}" IsEnabled="{Binding IsEnabled}" Content="Stop" />
-          </StackPanel>
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
     <Grid Row="2">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="100" />
@@ -73,13 +58,34 @@
       <Button Grid.Column="0"
               Margin="5"
               Command="{Binding StartServicesCommand}"
-              IsEnabled="{Binding IsEnabled}"
-              Content="Start all" />
+              Content="Start all"
+              IsEnabled="{Binding IsEnabled}" />
       <Button Grid.Column="1"
               Margin="5"
               Command="{Binding StopServicesCommand}"
-              IsEnabled="{Binding IsEnabled}"
-              Content="Stop all" />
+              Content="Stop all"
+              IsEnabled="{Binding IsEnabled}" />
     </Grid>
+    <ListBox Grid.Row="1"
+             Grid.Column="0"
+             Margin="5"
+             ItemsSource="{Binding ServiceInfoViewModels}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal">
+            <CheckBox VerticalAlignment="Center"
+                      IsChecked="{Binding Enabled}"
+                      IsEnabled="{Binding IsEnabled}" />
+            <Button Command="{Binding StartServiceCommand}"
+                    Content="▶"
+                    IsEnabled="{Binding IsEnabled}" />
+            <Button Command="{Binding StopServiceCommand}"
+                    Content="⏹"
+                    IsEnabled="{Binding IsEnabled}" />
+            <Label Background="{Binding Background}" Content="{Binding Name}" />
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
   </Grid>
 </Window>
