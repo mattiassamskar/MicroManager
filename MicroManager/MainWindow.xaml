@@ -6,12 +6,25 @@
         Height="600"
         Icon="MicroManager.ico"
         Style="{DynamicResource MyStyle}">
-
   <Window.Resources>
     <Style x:Key="MyStyle" TargetType="{x:Type Control}">
       <Setter Property="FontSize" Value="16" />
       <Setter Property="FontFamily" Value="Calibri" />
       <Setter Property="Background" Value="Silver" />
+    </Style>
+    <Style x:Key="ToggleButtonStyle" TargetType="Button">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Grid Background="{TemplateBinding Background}">
+              <ContentPresenter />
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
     </Style>
   </Window.Resources>
 
@@ -75,18 +88,10 @@
           <StackPanel Orientation="Horizontal">
             <CheckBox VerticalAlignment="Center"
                       IsChecked="{Binding Enabled}"
-                      IsEnabled="{Binding IsEnabled}" />
-            <Button Command="{Binding StartServiceCommand}"
-                    Content="▶"
-                    BorderThickness="0"
-                    Background="Transparent"
-                    IsEnabled="{Binding IsEnabled}" />
-            <Button Command="{Binding StopServiceCommand}"
-                    Content="⏹"
-                    BorderThickness="0"
-                    Background="Transparent"
-                    IsEnabled="{Binding IsEnabled}" />
-            <Label Background="{Binding Background}" Content="{Binding Name}" />
+                      IsEnabled="{Binding IsEnabled}"
+                      Margin="0,0,10,0"/>
+            <Button Command="{Binding StartStopToggleCommand}" Style="{StaticResource ToggleButtonStyle}"
+                    Background="{Binding Background}" Content="{Binding Name}" />
           </StackPanel>
         </DataTemplate>
       </ListBox.ItemTemplate>

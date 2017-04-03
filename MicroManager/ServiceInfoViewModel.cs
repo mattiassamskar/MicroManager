@@ -15,22 +15,19 @@ namespace MicroManager
     public ServiceInfoViewModel(IServiceHandler serviceHandler)
     {
       _serviceHandler = serviceHandler;
-      StartServiceCommand = new RelayCommand(StartCommandCanExecute, StartCommandExecuted);
-      StopServiceCommand = new RelayCommand(StopCommandCanExecute, StopCommandExecuted);
+      StartStopToggleCommand = new RelayCommand(StartStopToggleCommandCanExecute, StartStopToggleCommandExecuted);
       _enabled = true;
     }
 
-    public RelayCommand StartServiceCommand { get; set; }
-
-    public RelayCommand StopServiceCommand { get; set; }
+    public RelayCommand StartStopToggleCommand { get; set; }
 
     public string Name
     {
       get { return _name; }
       set
       {
-        OnPropertyChanged();
         _name = value;
+        OnPropertyChanged();
       }
     }
 
@@ -39,9 +36,9 @@ namespace MicroManager
       get { return _state; }
       set
       {
+        _state = value;
         OnPropertyChanged();
         OnPropertyChanged("Background");
-        _state = value;
       }
     }
 
@@ -50,8 +47,8 @@ namespace MicroManager
       get { return _enabled; }
       set
       {
-        OnPropertyChanged();
         _enabled = value;
+        OnPropertyChanged();
       }
     }
 
@@ -62,19 +59,27 @@ namespace MicroManager
       _serviceHandler.StartService(_name);
     }
 
-    private bool StartCommandCanExecute()
-    {
-      return true;
-    }
-
     internal void StopCommandExecuted()
     {
       _serviceHandler.StopService(_name);
     }
 
-    private bool StopCommandCanExecute()
+    internal void StartStopToggleCommandExecuted()
     {
-      return true;
+      switch (State)
+      {
+        case "Running":
+          StopCommandExecuted();
+          break;
+        case "Stopped":
+          StartCommandExecuted();
+          break;
+      }
+    }
+
+    private bool StartStopToggleCommandCanExecute()
+    {
+      return State == "Running" || State == "Stopped";
     }
   }
 }
