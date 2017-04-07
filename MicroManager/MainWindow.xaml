@@ -20,13 +20,8 @@
         <Setter.Value>
           <ControlTemplate TargetType="Button">
             <Grid Background="{TemplateBinding Background}">
-              <ContentPresenter Margin="1" />
+              <ContentPresenter Margin="2" />
             </Grid>
-            <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Opacity" Value="0.9" />
-              </Trigger>
-            </ControlTemplate.Triggers>
           </ControlTemplate>
         </Setter.Value>
       </Setter>

@@ -2,6 +2,8 @@
 
 namespace MicroManager
 {
+  using System.Collections;
+
   public class ServiceInfoViewModel : ViewModelBase
   {
     private readonly IServiceHandler serviceHandler;
@@ -68,7 +70,19 @@ namespace MicroManager
       }
     }
 
-    public SolidColorBrush Background => State == "Running" ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
+    public SolidColorBrush Background
+    {
+      get
+      {
+        switch (State)
+        {
+          case "Running":
+            return new SolidColorBrush(Color.FromRgb(34, 177, 76));
+          default:
+            return new SolidColorBrush(Color.FromRgb(237, 28, 36));
+        }
+      }
+    }
 
     internal async void StartCommandExecuted()
     {
