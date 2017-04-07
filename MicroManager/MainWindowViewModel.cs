@@ -34,6 +34,8 @@ namespace MicroManager
           if (e.NewItems != null) foreach (ServiceInfoViewModel item in e.NewItems) item.PropertyChanged += ServiceInfoViewModelChanged;
 
           if (e.OldItems != null) foreach (ServiceInfoViewModel item in e.OldItems) item.PropertyChanged -= ServiceInfoViewModelChanged;
+
+          UpdateServiceInfosObservable();
         };
     }
 
@@ -154,6 +156,11 @@ namespace MicroManager
     }
 
     private void ServiceInfoViewModelChanged(object sender, PropertyChangedEventArgs e)
+    {
+      UpdateServiceInfosObservable();
+    }
+
+    private void UpdateServiceInfosObservable()
     {
       ServiceInfosObservable.OnNext(
         ServiceInfoViewModels.Select(s => new ServiceInfo { Name = s.Name, State = s.State, Enabled = s.Enabled })
