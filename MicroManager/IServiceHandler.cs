@@ -12,8 +12,8 @@ namespace MicroManager
 
     Task StopServicesAsync(List<string> names);
 
-    void StartService(string name);
+    Task StartServiceAsync(string name);
 
-    void StopService(string name);
+    Task StopServiceAsync(string name);
   }
 }

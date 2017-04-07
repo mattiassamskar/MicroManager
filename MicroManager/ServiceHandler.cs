@@ -42,7 +42,7 @@ namespace MicroManager
     {
       await Task.Run(() =>
       {
-        Task.WaitAll(names.Select(name => Task.Run(() => StartService(name))).ToArray());
+        Task.WaitAll(names.Select(StartServiceAsync).ToArray());
       });
     }
 
@@ -50,30 +50,38 @@ namespace MicroManager
     {
       await Task.Run(() =>
       {
-        Task.WaitAll(names.Select(name => Task.Run(() => StopService(name))).ToArray());
+        Task.WaitAll(names.Select(StopServiceAsync).ToArray());
       });
     }
 
-    public void StartService(string name)
+    public async Task StartServiceAsync(string name)
     {
       var service = new ServiceController(name);
 
       if (service.Status != ServiceControllerStatus.Stopped)
         return;
 
-      service.Start();
-      service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10));
+      await Task.Run(
+        () =>
+          {
+            service.Start();
+            service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10));
+          });
     }
 
-    public void StopService(string name)
+    public async Task StopServiceAsync(string name)
     {
       var service = new ServiceController(name);
 
       if (service.Status != ServiceControllerStatus.Running)
         return;
 
-      service.Stop();
-      service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
+      await Task.Run(
+        () =>
+          {
+            service.Stop();
+            service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
+          });
     }
 
     private void EventWatcherOnEventArrived(object sender, EventArrivedEventArgs eventArrivedEventArgs)
