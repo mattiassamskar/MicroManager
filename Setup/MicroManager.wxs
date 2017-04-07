@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*" Name="MicroManager" Language="1033" Version="2.1.0.0" Manufacturer="Oh Snap! Development" UpgradeCode="82BD032A-B421-4125-AAD0-CD7E5F838D36">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-    <Icon Id="MicroManager.ico" SourceFile="..\MicroManager\MicroManager.ico"/>
+    <Icon Id="MicroManager.ico" SourceFile="..\MicroManager\Resources\MicroManager.ico"/>
     <Property Id="ARPPRODUCTICON" Value="MicroManager.ico" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes"/>

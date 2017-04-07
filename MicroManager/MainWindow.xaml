@@ -4,7 +4,7 @@
         Title="MicroManager"
         Width="500"
         Height="600"
-        Icon="MicroManager.ico"
+        Icon="{Binding IconViewModel.ApplicationIcon}"
         Style="{DynamicResource MyStyle}">
   <Window.Resources>
     <Style x:Key="MyStyle" TargetType="{x:Type Control}">
@@ -86,12 +86,14 @@
       <ListBox.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal">
-            <CheckBox VerticalAlignment="Center"
+            <CheckBox Margin="0,0,10,0"
+                      VerticalAlignment="Center"
                       IsChecked="{Binding Enabled}"
-                      IsEnabled="{Binding IsEnabled}"
-                      Margin="0,0,10,0"/>
-            <Button Command="{Binding StartStopToggleCommand}" Style="{StaticResource ToggleButtonStyle}"
-                    Background="{Binding Background}" Content="{Binding Name}" />
+                      IsEnabled="{Binding IsEnabled}" />
+            <Button Background="{Binding Background}"
+                    Command="{Binding StartStopToggleCommand}"
+                    Content="{Binding Name}"
+                    Style="{StaticResource ToggleButtonStyle}" />
           </StackPanel>
         </DataTemplate>
       </ListBox.ItemTemplate>

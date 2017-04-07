@@ -2,41 +2,47 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
-using System.Reactive.Subjects;
+using System.Reactive.Linq;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 
 namespace MicroManager
 {
+  using System.Reactive.Subjects;
+
   public class ServiceHandler : IServiceHandler
   {
-    public Subject<ServiceInfo> ServiceInfoObservable { get; set; } = new Subject<ServiceInfo>();
+    private ManagementEventWatcher EventWatcher { get; set; }
 
-    private ManagementEventWatcher _eventWatcher;
+    private Subject<IEnumerable<ServiceInfo>> ServiceInfosObservable { get; } = new Subject<IEnumerable<ServiceInfo>>();
 
-    public IEnumerable<ServiceInfo> GetServices(string filter)
+    public IObservable<IEnumerable<ServiceInfo>> Subscribe(string filter)
     {
       var windowsServicesSearcher = new ManagementObjectSearcher(
         "root\\cimv2",
         $"select * from Win32_Service where Name like '%{filter}%'");
-      var managementObjectCollection = windowsServicesSearcher.Get();
 
-      foreach (var managementBaseObject in managementObjectCollection)
-        yield return new ServiceInfo
-        {
-          Name = managementBaseObject["Name"].ToString(),
-          State = managementBaseObject["State"].ToString()
-        };
+      var serviceInfos =
+        windowsServicesSearcher.Get()
+          .Cast<ManagementBaseObject>()
+          .ToList()
+          .Select(o => new ServiceInfo { Name = o["Name"].ToString(), State = o["State"].ToString() });
+
+      EventWatcher =
+        new ManagementEventWatcher(
+          new WqlEventQuery(
+            $"select * from __InstanceModificationEvent within 1 where TargetInstance isa 'Win32_Service' and TargetInstance.Name like '%{filter}%'"));
+      EventWatcher.EventArrived += EventWatcherOnEventArrived;
+      EventWatcher.Start();
+
+      return ServiceInfosObservable.Publish(serviceInfos).RefCount();
     }
 
     public async Task StartServicesAsync(List<string> names)
     {
       await Task.Run(() =>
       {
-        Task.WaitAll(names.Select(name => Task.Run(() =>
-        {
-          StartService(name);
-        })).ToArray());
+        Task.WaitAll(names.Select(name => Task.Run(() => StartService(name))).ToArray());
       });
     }
 
@@ -44,10 +50,7 @@ namespace MicroManager
     {
       await Task.Run(() =>
       {
-        Task.WaitAll(names.Select(name => Task.Run(() =>
-        {
-          names.ForEach(StopService);
-        })).ToArray());
+        Task.WaitAll(names.Select(name => Task.Run(() => StopService(name))).ToArray());
       });
     }
 
@@ -73,35 +76,20 @@ namespace MicroManager
       service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
     }
 
-    public void RegisterEventWatcher()
-    {
-      _eventWatcher =
-        new ManagementEventWatcher(
-          new WqlEventQuery(
-            "SELECT * FROM __InstanceModificationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Service'"));
-      _eventWatcher.EventArrived += EventWatcherOnEventArrived;
-      _eventWatcher.Start();
-    }
-
-    public void UnRegisterEventWatcher()
-    {
-      _eventWatcher.EventArrived -= EventWatcherOnEventArrived;
-      _eventWatcher.Stop();
-      _eventWatcher.Dispose();
-    }
-
     private void EventWatcherOnEventArrived(object sender, EventArrivedEventArgs eventArrivedEventArgs)
     {
       var managementBaseObject = (ManagementBaseObject)
         eventArrivedEventArgs.NewEvent.Properties["TargetInstance"].Value;
 
-      var myService = new ServiceInfo
-      {
-        Name = managementBaseObject["Name"].ToString(),
-        State = managementBaseObject["State"].ToString()
-      };
-
-      ServiceInfoObservable.OnNext(myService);
+      ServiceInfosObservable.OnNext(
+        new List<ServiceInfo>
+          {
+            new ServiceInfo
+              {
+                Name = managementBaseObject["Name"].ToString(),
+                State = managementBaseObject["State"].ToString()
+              }
+          });
     }
   }
 }

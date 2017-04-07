@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
@@ -12,37 +13,31 @@ namespace MicroManager
 {
   public class MainWindowViewModel : ViewModelBase
   {
-    private readonly IServiceHandler _serviceHandler;
-
-    private string _searchString;
-
-    private bool _isEnabled;
-
-    private NotifyIconHandler _notifyIconHandler;
+    private readonly IServiceHandler serviceHandler;
+    private string searchString;
+    private bool isEnabled;
 
     public MainWindowViewModel(IServiceHandler serviceHandler)
     {
+      this.serviceHandler = serviceHandler;
+
       ServiceInfoViewModels = new ObservableCollection<ServiceInfoViewModel>();
       SearchCommand = new RelayCommand(SearchCommandCanExecute, SearchCommandExecuted);
       StartServicesCommand = new RelayCommand(StartServicesCommandCanExecute, StartServicesCommandExecuted);
       StopServicesCommand = new RelayCommand(StopServicesCommandCanExecute, StopServicesCommandExecuted);
       IsEnabled = true;
 
-      _serviceHandler = serviceHandler;
-      _serviceHandler.RegisterEventWatcher();
-      _serviceHandler.ServiceInfoObservable.Subscribe(
-        service =>
-        {
-          var myService = ServiceInfoViewModels.SingleOrDefault(s => s.Name == service.Name);
-          if (myService == null) return;
-          myService.State = service.State;
-          ServiceInfosObservable.OnNext(
-            ServiceInfoViewModels.Select(s => new ServiceInfo {Name = s.Name, State = s.State, Enabled = s.Enabled})
-              .ToList());
-        });
+      IconViewModel = new IconViewModel(ServiceInfosObservable);
 
-      _notifyIconHandler = new NotifyIconHandler(ServiceInfosObservable);
+      ServiceInfoViewModels.CollectionChanged += (sender, e) =>
+        {
+          if (e.NewItems != null) foreach (ServiceInfoViewModel item in e.NewItems) item.PropertyChanged += ServiceInfoViewModelChanged;
+
+          if (e.OldItems != null) foreach (ServiceInfoViewModel item in e.OldItems) item.PropertyChanged -= ServiceInfoViewModelChanged;
+        };
     }
+
+    public IconViewModel IconViewModel { get; set; }
 
     public ObservableCollection<ServiceInfoViewModel> ServiceInfoViewModels { get; set; }
 
@@ -56,10 +51,14 @@ namespace MicroManager
 
     public string SearchString
     {
-      get { return _searchString; }
+      get
+      {
+        return searchString;
+      }
+
       set
       {
-        _searchString = value;
+        searchString = value;
         OnPropertyChanged();
         SearchCommand.RaiseCanExecuteChanged();
       }
@@ -69,26 +68,38 @@ namespace MicroManager
     {
       get
       {
-        return _isEnabled;
+        return isEnabled;
       }
+
       set
       {
-        _isEnabled = value;
+        isEnabled = value;
         OnPropertyChanged();
       }
     }
 
-    internal void SearchCommandExecuted()
+    private void SearchCommandExecuted()
     {
       ServiceInfoViewModels.Clear();
-      _serviceHandler.GetServices(SearchString)
-        .ToList()
-        .ForEach(
-          s => ServiceInfoViewModels.Add(new ServiceInfoViewModel(_serviceHandler) { Name = s.Name, State = s.State }));
 
-      ServiceInfosObservable.OnNext(
-        ServiceInfoViewModels.Select(s => new ServiceInfo { Name = s.Name, State = s.State, Enabled = s.Enabled })
-          .ToList());
+      serviceHandler.Subscribe(SearchString).Subscribe(
+        services =>
+          {
+            services.ToList().ForEach(
+              service =>
+                {
+                  var myService = ServiceInfoViewModels.SingleOrDefault(s => s.Name == service.Name);
+                  if (myService == null)
+                  {
+                    ServiceInfoViewModels.Add(
+                      new ServiceInfoViewModel(serviceHandler) { Name = service.Name, State = service.State });
+                  }
+                  else
+                  {
+                    myService.State = service.State;
+                  }
+                });
+          });
     }
 
     private bool SearchCommandCanExecute()
@@ -101,11 +112,12 @@ namespace MicroManager
       try
       {
         IsEnabled = false;
-        await _serviceHandler.StartServicesAsync(EnabledServices());
+        await serviceHandler.StartServicesAsync(EnabledServices());
       }
       catch (Exception exception)
       {
-        MessageBox.Show(exception.Message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
+        var message = exception.Message + " " + exception.InnerException?.Message;
+        MessageBox.Show(message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
       }
       finally
       {
@@ -123,11 +135,12 @@ namespace MicroManager
       try
       {
         IsEnabled = false;
-        await _serviceHandler.StopServicesAsync(EnabledServices());
+        await serviceHandler.StopServicesAsync(EnabledServices());
       }
       catch (Exception exception)
       {
-        MessageBox.Show(exception.Message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
+        var message = exception.Message + " " + exception.InnerException?.Message;
+        MessageBox.Show(message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
       }
       finally
       {
@@ -138,6 +151,13 @@ namespace MicroManager
     private bool StopServicesCommandCanExecute()
     {
       return IsEnabled;
+    }
+
+    private void ServiceInfoViewModelChanged(object sender, PropertyChangedEventArgs e)
+    {
+      ServiceInfosObservable.OnNext(
+        ServiceInfoViewModels.Select(s => new ServiceInfo { Name = s.Name, State = s.State, Enabled = s.Enabled })
+          .ToList());
     }
 
     private List<string> EnabledServices()

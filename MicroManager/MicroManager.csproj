@@ -49,7 +49,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>MicroManager.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\MicroManager.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>MicroManager.Program</StartupObject>
@@ -107,13 +107,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="IconViewModel.cs" />
     <Compile Include="IServiceHandler.cs" />
-    <Compile Include="NotifyIconHandler.cs" />
-    <Compile Include="Resource1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource1.resx</DependentUpon>
-    </Compile>
     <Compile Include="ServiceInfoViewModel.cs" />
     <Compile Include="ServiceInfo.cs" />
     <Compile Include="Program.cs" />
@@ -165,22 +160,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="MicroManager.ico" />
+    <Resource Include="Resources\MicroManager.ico" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resource1.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Resource Include="Resources\MicroManager-Green.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\grey.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\green.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\red.ico" />
+    <Resource Include="Resources\MicroManager-Red.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

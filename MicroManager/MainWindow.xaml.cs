@@ -1,25 +1,14 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 
 namespace MicroManager
 {
   public partial class MainWindow : Window
   {
-    private readonly IServiceHandler _serviceHandler;
-
-    public MainWindow(MainWindowViewModel mainWindowViewModel, IServiceHandler serviceHandler)
+    public MainWindow(MainWindowViewModel mainWindowViewModel)
     {
-      _serviceHandler = serviceHandler;
       InitializeComponent();
 
       DataContext = mainWindowViewModel;
-    }
-
-    protected override void OnClosing(CancelEventArgs e)
-    {
-      _serviceHandler.UnRegisterEventWatcher();
-      base.OnClosing(e);
-
     }
   }
 }
