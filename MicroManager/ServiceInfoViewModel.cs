@@ -4,64 +4,84 @@ namespace MicroManager
 {
   public class ServiceInfoViewModel : ViewModelBase
   {
-    private readonly IServiceHandler _serviceHandler;
+    private readonly IServiceHandler serviceHandler;
 
-    private string _name;
+    private string name;
 
-    private string _state;
+    private string state;
 
-    private bool _enabled;
+    private bool included;
+
+    private bool isEnabled;
 
     public ServiceInfoViewModel(IServiceHandler serviceHandler)
     {
-      _serviceHandler = serviceHandler;
+      this.serviceHandler = serviceHandler;
       StartStopToggleCommand = new RelayCommand(StartStopToggleCommandCanExecute, StartStopToggleCommandExecuted);
-      _enabled = true;
+      included = true;
+      IsEnabled = true;
     }
 
     public RelayCommand StartStopToggleCommand { get; set; }
 
     public string Name
     {
-      get { return _name; }
+      get { return name; }
       set
       {
-        _name = value;
+        name = value;
         OnPropertyChanged();
       }
     }
 
     public string State
     {
-      get { return _state; }
+      get { return state; }
       set
       {
-        _state = value;
+        state = value;
         OnPropertyChanged();
         OnPropertyChanged("Background");
       }
     }
 
-    public bool Enabled
+    public bool Included
     {
-      get { return _enabled; }
+      get { return included; }
       set
       {
-        _enabled = value;
+        included = value;
+        OnPropertyChanged();
+      }
+    }
+
+    public bool IsEnabled
+    {
+      get
+      {
+        return isEnabled;
+      }
+      set
+      {
+        isEnabled = value;
         OnPropertyChanged();
       }
     }
 
     public SolidColorBrush Background => State == "Running" ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
 
-    internal void StartCommandExecuted()
+    internal async void StartCommandExecuted()
     {
-      _serviceHandler.StartService(_name);
+      IsEnabled = false;
+      await serviceHandler.StartServiceAsync(name);
+      IsEnabled = true;
     }
 
-    internal void StopCommandExecuted()
+    internal async void StopCommandExecuted()
     {
-      _serviceHandler.StopService(_name);
+      IsEnabled = false;
+      await serviceHandler.StopServiceAsync(name);
+      IsEnabled = true;
     }
 
     internal void StartStopToggleCommandExecuted()
@@ -79,7 +99,7 @@ namespace MicroManager
 
     private bool StartStopToggleCommandCanExecute()
     {
-      return State == "Running" || State == "Stopped";
+      return IsEnabled;
     }
   }
 }

@@ -163,13 +163,13 @@ namespace MicroManager
     private void UpdateServiceInfosObservable()
     {
       ServiceInfosObservable.OnNext(
-        ServiceInfoViewModels.Select(s => new ServiceInfo { Name = s.Name, State = s.State, Enabled = s.Enabled })
+        ServiceInfoViewModels.Select(s => new ServiceInfo { Name = s.Name, State = s.State, Enabled = s.Included })
           .ToList());
     }
 
     private List<string> EnabledServices()
     {
-      return ServiceInfoViewModels.Where(si => si.Enabled).Select(s => s.Name).ToList();
+      return ServiceInfoViewModels.Where(si => si.Included).Select(s => s.Name).ToList();
     }
   }
 }
