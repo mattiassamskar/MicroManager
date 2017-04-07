@@ -1,9 +1,9 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows;
+using System.Windows.Media;
 
 namespace MicroManager
 {
-  using System.Collections;
-
   public class ServiceInfoViewModel : ViewModelBase
   {
     private readonly IServiceHandler serviceHandler;
@@ -86,16 +86,38 @@ namespace MicroManager
 
     internal async void StartCommandExecuted()
     {
-      IsEnabled = false;
-      await serviceHandler.StartServiceAsync(name);
-      IsEnabled = true;
+      try
+      {
+        IsEnabled = false;
+        await serviceHandler.StartServiceAsync(name);
+      }
+      catch (Exception exception)
+      {
+        var message = exception.Message + " " + exception.InnerException?.Message;
+        MessageBox.Show(message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+      finally
+      {
+        IsEnabled = true;
+      }
     }
 
     internal async void StopCommandExecuted()
     {
-      IsEnabled = false;
-      await serviceHandler.StopServiceAsync(name);
-      IsEnabled = true;
+      try
+      {
+        IsEnabled = false;
+        await serviceHandler.StopServiceAsync(name);
+      }
+      catch (Exception exception)
+      {
+        var message = exception.Message + " " + exception.InnerException?.Message;
+        MessageBox.Show(message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+      finally
+      {
+        IsEnabled = true;
+      }
     }
 
     internal void StartStopToggleCommandExecuted()
