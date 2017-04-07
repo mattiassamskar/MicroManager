@@ -49,7 +49,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\MicroManager.ico</ApplicationIcon>
+    <ApplicationIcon>MicroManager.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>MicroManager.Program</StartupObject>
@@ -160,13 +160,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\MicroManager.ico" />
+    <Resource Include="MicroManager.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\MicroManager-Green.ico" />
+    <Resource Include="MicroManager-Green.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\MicroManager-Red.ico" />
+    <Resource Include="MicroManager-Red.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
