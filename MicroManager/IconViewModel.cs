@@ -6,9 +6,9 @@ namespace MicroManager
 {
   public class IconViewModel : ViewModelBase
   {
-    private string applicationIcon;
+    private string _applicationIcon;
 
-    public IconViewModel(IObservable<List<ServiceInfo>> serviceInfosObservable)
+    public IconViewModel(IObservable<List<ServiceInfoViewModel.ServiceInfo>> serviceInfosObservable)
     {
       serviceInfosObservable.Subscribe(
         serviceInfos =>
@@ -30,11 +30,11 @@ namespace MicroManager
     {
       get
       {
-        return applicationIcon;
+        return _applicationIcon;
       }
       set
       {
-        applicationIcon = value;
+        _applicationIcon = value;
         OnPropertyChanged();
       }
     }
