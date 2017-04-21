@@ -6,42 +6,38 @@ namespace MicroManager
 {
   public class ServiceInfoViewModel : ViewModelBase
   {
-    private readonly IServiceHandler serviceHandler;
+    private readonly IServiceHandler _serviceHandler;
 
-    private string name;
+    private bool _isEnabled = true;
 
-    private string state;
+    private bool _included = true;
 
-    private bool included;
-
-    private bool isEnabled;
+    public ServiceInfo _serviceInfo => new ServiceInfo();
 
     public ServiceInfoViewModel(IServiceHandler serviceHandler)
     {
-      this.serviceHandler = serviceHandler;
-      StartStopToggleCommand = new RelayCommand(StartStopToggleCommandCanExecute, StartStopToggleCommandExecuted);
-      included = true;
-      IsEnabled = true;
+      _serviceHandler = serviceHandler;
+      StartStopToggleCommand = new RelayCommand(() => IsEnabled, StartStopToggleCommandExecuted);
     }
 
     public RelayCommand StartStopToggleCommand { get; set; }
 
     public string Name
     {
-      get { return name; }
+      get { return _serviceInfo.Name; }
       set
       {
-        name = value;
+        _serviceInfo.Name = value;
         OnPropertyChanged();
       }
     }
 
     public string State
     {
-      get { return state; }
+      get { return _serviceInfo.State; }
       set
       {
-        state = value;
+        _serviceInfo.State = value;
         OnPropertyChanged();
         OnPropertyChanged("Background");
       }
@@ -49,10 +45,10 @@ namespace MicroManager
 
     public bool Included
     {
-      get { return included; }
+      get { return _included; }
       set
       {
-        included = value;
+        _included = value;
         OnPropertyChanged();
       }
     }
@@ -61,11 +57,11 @@ namespace MicroManager
     {
       get
       {
-        return isEnabled;
+        return _isEnabled;
       }
       set
       {
-        isEnabled = value;
+        _isEnabled = value;
         OnPropertyChanged();
       }
     }
@@ -89,7 +85,7 @@ namespace MicroManager
       try
       {
         IsEnabled = false;
-        await serviceHandler.StartServiceAsync(name);
+        await _serviceHandler.StartServiceAsync(_serviceInfo.Name);
       }
       catch (Exception exception)
       {
@@ -107,7 +103,7 @@ namespace MicroManager
       try
       {
         IsEnabled = false;
-        await serviceHandler.StopServiceAsync(name);
+        await _serviceHandler.StopServiceAsync(_serviceInfo.Name);
       }
       catch (Exception exception)
       {
@@ -133,9 +129,13 @@ namespace MicroManager
       }
     }
 
-    private bool StartStopToggleCommandCanExecute()
+    public class ServiceInfo
     {
-      return IsEnabled;
+      public string Name { get; set; }
+
+      public string State { get; set; }
+
+      public bool Enabled { get; set; }
     }
   }
 }
