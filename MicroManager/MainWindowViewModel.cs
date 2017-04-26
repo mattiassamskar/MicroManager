@@ -83,16 +83,16 @@ namespace MicroManager
 
     private async void StartServicesCommandExecuted()
     {
-        IsEnabled = false;
-        await
-          Task.Run(
-            () =>
-            {
-              Task.WaitAll(
-                ServiceInfoViewModels.Where(si => si.Included)
-                  .Select(s => Task.Run(() => s.StartCommandExecuted()))
-                  .ToArray());
-            });
+      IsEnabled = false;
+      await
+        Task.Run(
+          () =>
+          {
+            Task.WaitAll(
+              ServiceInfoViewModels.Where(s => s.Included)
+                .Select(s => s.StartCommandExecuted())
+                .ToArray());
+          });
       IsEnabled = true;
     }
 
