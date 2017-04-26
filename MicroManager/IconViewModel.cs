@@ -8,9 +8,9 @@ namespace MicroManager
   {
     private string _applicationIcon;
 
-    public IconViewModel(IObservable<List<ServiceInfoViewModel.ServiceInfo>> serviceInfosObservable)
+    public IconViewModel(IObservable<IEnumerable<string>> statesObservable)
     {
-      serviceInfosObservable.Subscribe(
+      statesObservable.Subscribe(
         serviceInfos =>
           {
             if (!serviceInfos.Any())
@@ -19,7 +19,7 @@ namespace MicroManager
             }
             else
             {
-              ApplicationIcon = serviceInfos.Where(si => si.Included).All(si => si.State == "Running")
+              ApplicationIcon = serviceInfos.All(si => si == "Running")
                                   ? "MicroManager-Green.ico"
                                   : "MicroManager-Red.ico";
             }

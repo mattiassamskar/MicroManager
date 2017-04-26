@@ -38,8 +38,7 @@ namespace MicroManager
     public ObservableCollection<ServiceInfoViewModel> ServiceInfoViewModels { get; set; } =
       new ObservableCollection<ServiceInfoViewModel>();
 
-    public Subject<List<ServiceInfoViewModel.ServiceInfo>> ServiceInfosObservable { get; set; } =
-      new Subject<List<ServiceInfoViewModel.ServiceInfo>>();
+    public Subject<IEnumerable<string>> ServiceInfosObservable { get; } = new Subject<IEnumerable<string>>();
 
     public RelayCommand SearchCommand { get; set; }
 
@@ -84,30 +83,14 @@ namespace MicroManager
     private async void StartServicesCommandExecuted()
     {
       IsEnabled = false;
-      await
-        Task.Run(
-          () =>
-          {
-            Task.WaitAll(
-              ServiceInfoViewModels.Where(s => s.Included)
-                .Select(s => s.StartCommandExecuted())
-                .ToArray());
-          });
+      await Task.WhenAll(ServiceInfoViewModels.Where(s => s.Included).Select(s => s.StartServiceAsync()).ToArray());
       IsEnabled = true;
     }
 
     private async void StopServicesCommandExecuted()
     {
       IsEnabled = false;
-      await
-        Task.Run(
-          () =>
-          {
-            Task.WaitAll(
-              ServiceInfoViewModels.Where(s => s.Included)
-                .Select(s => s.StopCommandExecuted())
-                .ToArray());
-          });
+      await Task.WhenAll(ServiceInfoViewModels.Where(s => s.Included).Select(s => s.StopServiceAsync()).ToArray());
       IsEnabled = true;
     }
 
@@ -118,12 +101,7 @@ namespace MicroManager
 
     private void UpdateServiceInfosObservable()
     {
-      ServiceInfosObservable.OnNext(ServiceInfoViewModels.Select(s => new ServiceInfoViewModel.ServiceInfo
-      {
-        Name = s.Name,
-        State = s.State,
-        Included = s.Included
-      }).ToList());
+      ServiceInfosObservable.OnNext(ServiceInfoViewModels.Where(s => s.Included).Select(s => s.State));
     }
   }
 }

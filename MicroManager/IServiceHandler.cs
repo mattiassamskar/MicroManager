@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Reactive.Subjects;
-using System.Threading.Tasks;
 
 namespace MicroManager
 {
   public interface IServiceHandler
   {
-    Subject<ServiceInfoViewModel.ServiceInfo> ServiceInfosObservable { get; }
+    Subject<ServiceInfo> ServiceInfosObservable { get; }
 
-    Task StartServiceAsync(string name);
+    void StartService(string name);
 
-    Task StopServiceAsync(string name);
+    void StopService(string name);
 
-    IEnumerable<ServiceInfoViewModel.ServiceInfo> GetServiceInfos(string filter);
+    IEnumerable<ServiceInfo> GetServiceInfos(string filter);
   }
 }

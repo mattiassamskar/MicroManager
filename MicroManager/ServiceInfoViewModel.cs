@@ -103,12 +103,12 @@ namespace MicroManager
       }
     }
 
-    internal async Task StartCommandExecuted()
+    public async Task StartServiceAsync()
     {
       try
       {
         IsEnabled = false;
-        await _serviceHandler.StartServiceAsync(_serviceInfo.Name);
+        await Task.Run(() => _serviceHandler.StartService(_serviceInfo.Name));
       }
       catch (Exception exception)
       {
@@ -120,12 +120,12 @@ namespace MicroManager
       }
     }
 
-    internal async Task StopCommandExecuted()
+    public async Task StopServiceAsync()
     {
       try
       {
         IsEnabled = false;
-        await _serviceHandler.StopServiceAsync(_serviceInfo.Name);
+        await Task.Run(() => _serviceHandler.StopService(_serviceInfo.Name));
       }
       catch (Exception exception)
       {
@@ -137,26 +137,17 @@ namespace MicroManager
       }
     }
 
-    internal async void StartStopToggleCommandExecuted()
+    public async void StartStopToggleCommandExecuted()
     {
       switch (State)
       {
         case "Running":
-          await StopCommandExecuted();
+          await StopServiceAsync();
           break;
         case "Stopped":
-          await StartCommandExecuted();
+          await StartServiceAsync();
           break;
       }
-    }
-
-    public class ServiceInfo
-    {
-      public string Name { get; set; }
-
-      public string State { get; set; }
-
-      public bool Included { get; set; }
     }
   }
 }

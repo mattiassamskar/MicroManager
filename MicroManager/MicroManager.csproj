@@ -109,6 +109,7 @@
     </ApplicationDefinition>
     <Compile Include="IconViewModel.cs" />
     <Compile Include="IServiceHandler.cs" />
+    <Compile Include="ServiceInfo.cs" />
     <Compile Include="ServiceInfoViewModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ServiceHandler.cs" />
