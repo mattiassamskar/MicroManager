@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Subjects;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Windows;
-
-[assembly: InternalsVisibleTo("MicroManager.Tests")]
 
 namespace MicroManager
 {
@@ -35,8 +30,6 @@ namespace MicroManager
 
         if (e.OldItems != null)
           foreach (ServiceInfoViewModel item in e.OldItems) item.PropertyChanged -= ServiceInfoViewModelChanged;
-
-        UpdateServiceInfosObservable();
       };
     }
 
@@ -81,30 +74,13 @@ namespace MicroManager
     {
       ServiceInfoViewModels.Clear();
 
-      _serviceHandler.WhenServiceInfosChange(SearchString).Subscribe(
-        services =>
-        {
-          services.ToList().ForEach(
-            service =>
-            {
-              var myService = ServiceInfoViewModels.SingleOrDefault(s => s.Name == service.Name);
-              if (myService == null)
-              {
-                ServiceInfoViewModels.Add(
-                  new ServiceInfoViewModel(_serviceHandler) {Name = service.Name, State = service.State});
-              }
-              else
-              {
-                myService.State = service.State;
-              }
-            });
-        });
+      _serviceHandler.GetServiceInfos(SearchString)
+        .ToList()
+        .ForEach(s => ServiceInfoViewModels.Add(new ServiceInfoViewModel(_serviceHandler, s)));
     }
 
     private async void StartServicesCommandExecuted()
     {
-      try
-      {
         IsEnabled = false;
         await
           Task.Run(
@@ -112,58 +88,30 @@ namespace MicroManager
             {
               Task.WaitAll(
                 ServiceInfoViewModels.Where(si => si.Included)
-                  .Select(s => _serviceHandler.StartServiceAsync(s.Name))
+                  .Select(s => Task.Run(() => s.StartCommandExecuted()))
                   .ToArray());
             });
-      }
-      catch (Exception exception)
-      {
-        var message = exception.Message + " " + exception.InnerException?.Message;
-        MessageBox.Show(message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
-      finally
-      {
-        IsEnabled = true;
-      }
+      IsEnabled = true;
     }
 
     private async void StopServicesCommandExecuted()
     {
-      try
-      {
-        IsEnabled = false;
-        await
-          Task.Run(
-            () =>
-            {
-              Task.WaitAll(
-                ServiceInfoViewModels.Where(si => si.Included)
-                  .Select(s => _serviceHandler.StopServiceAsync(s.Name))
-                  .ToArray());
-            });
-      }
-      catch (Exception exception)
-      {
-        var message = exception.Message + " " + exception.InnerException?.Message;
-        MessageBox.Show(message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
-      finally
-      {
-        IsEnabled = true;
-      }
+      IsEnabled = false;
+      await
+        Task.Run(
+          () =>
+          {
+            Task.WaitAll(
+              ServiceInfoViewModels.Where(s => s.Included)
+                .Select(s => s.StopCommandExecuted())
+                .ToArray());
+          });
+      IsEnabled = true;
     }
 
     private void ServiceInfoViewModelChanged(object sender, PropertyChangedEventArgs e)
     {
-      UpdateServiceInfosObservable();
-    }
-
-    private void UpdateServiceInfosObservable()
-    {
-      ServiceInfosObservable.OnNext(
-        ServiceInfoViewModels.Select(
-            s => s._serviceInfo)
-          .ToList());
+      ServiceInfosObservable.OnNext(ServiceInfoViewModels.Select(s => s._serviceInfo).ToList());
     }
   }
 }

@@ -14,8 +14,8 @@ namespace MicroManager
   {
     private ManagementEventWatcher EventWatcher { get; set; }
 
-    private Subject<IEnumerable<ServiceInfoViewModel.ServiceInfo>> ServiceInfosObservable { get; } =
-      new Subject<IEnumerable<ServiceInfoViewModel.ServiceInfo>>();
+    public Subject<ServiceInfoViewModel.ServiceInfo> ServiceInfosObservable { get; } =
+      new Subject<ServiceInfoViewModel.ServiceInfo>();
 
     public async Task StartServiceAsync(string name)
     {
@@ -47,49 +47,38 @@ namespace MicroManager
         });
     }
 
-    public IObservable<IEnumerable<ServiceInfoViewModel.ServiceInfo>> WhenServiceInfosChange(string filter)
+    public IEnumerable<ServiceInfoViewModel.ServiceInfo> GetServiceInfos(string filter)
     {
-      var windowsServicesSearcher = new ManagementObjectSearcher(
-        "root\\cimv2",
-        $"select * from Win32_Service where Name like '%{filter}%'");
-
-      var serviceInfos =
-        windowsServicesSearcher.Get()
-          .Cast<ManagementBaseObject>()
-          .ToList()
-          .Select(o => new ServiceInfoViewModel.ServiceInfo
-          {
-            Name = o["Name"].ToString(),
-            State = o["State"].ToString()
-          });
-
       EventWatcher =
         new ManagementEventWatcher(
           new WqlEventQuery(
-            "select * from __InstanceModificationEvent within 1 " +
-            "where TargetInstance isa 'Win32_Service' " +
-            $"and TargetInstance.Name like '%{filter}%'"));
+            "select * from __InstanceModificationEvent within 1 " + "where TargetInstance isa 'Win32_Service'"));
 
-      EventWatcher.EventArrived += EventWatcherOnEventArrived;
+      EventWatcher.EventArrived += (sender, eventArrivedEventArgs) =>
+        {
+          var managementBaseObject =
+            (ManagementBaseObject)eventArrivedEventArgs.NewEvent.Properties["TargetInstance"].Value;
+
+          ServiceInfosObservable.OnNext(
+            new ServiceInfoViewModel.ServiceInfo
+              {
+                Name = managementBaseObject["Name"].ToString(),
+                State = managementBaseObject["State"].ToString()
+              });
+        };
       EventWatcher.Start();
 
-      return ServiceInfosObservable.Publish(serviceInfos).RefCount();
-    }
+      ServiceInfosObservable.Publish().RefCount();
 
-    private void EventWatcherOnEventArrived(object sender, EventArrivedEventArgs eventArrivedEventArgs)
-    {
-      var managementBaseObject = (ManagementBaseObject)
-        eventArrivedEventArgs.NewEvent.Properties["TargetInstance"].Value;
+      var managementObjectSearcher = new ManagementObjectSearcher(
+        "root\\cimv2",
+        $"select * from Win32_Service where Name like '%{filter}%'");
 
-      ServiceInfosObservable.OnNext(
-        new List<ServiceInfoViewModel.ServiceInfo>
-        {
-          new ServiceInfoViewModel.ServiceInfo
-          {
-            Name = managementBaseObject["Name"].ToString(),
-            State = managementBaseObject["State"].ToString()
-          }
-        });
+      return
+        managementObjectSearcher.Get()
+          .Cast<ManagementBaseObject>()
+          .Select(
+            o => new ServiceInfoViewModel.ServiceInfo { Name = o["Name"].ToString(), State = o["State"].ToString() });
     }
   }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Windows;
+using System.Reactive.Linq;
 using System.Windows.Media;
 
 namespace MicroManager
 {
+  using System.Threading.Tasks;
+
   public class ServiceInfoViewModel : ViewModelBase
   {
     private readonly IServiceHandler _serviceHandler;
@@ -12,12 +14,17 @@ namespace MicroManager
 
     private bool _included = true;
 
-    public ServiceInfo _serviceInfo => new ServiceInfo();
+    public ServiceInfo _serviceInfo;
 
-    public ServiceInfoViewModel(IServiceHandler serviceHandler)
+    private string _message;
+
+    public ServiceInfoViewModel(IServiceHandler serviceHandler, ServiceInfo serviceInfo)
     {
       _serviceHandler = serviceHandler;
+      _serviceInfo = serviceInfo;
       StartStopToggleCommand = new RelayCommand(() => IsEnabled, StartStopToggleCommandExecuted);
+
+      _serviceHandler.ServiceInfosObservable.Where(s => s.Name == Name).Subscribe(s => State = s.State);
     }
 
     public RelayCommand StartStopToggleCommand { get; set; }
@@ -32,14 +39,30 @@ namespace MicroManager
       }
     }
 
+    public string Message
+    {
+      get
+      {
+        return _message;
+      }
+      private set
+      {
+        _message = value;
+        OnPropertyChanged();
+      }
+    }
+
     public string State
     {
       get { return _serviceInfo.State; }
       set
       {
+        if (_serviceInfo.State == value) return;
+
         _serviceInfo.State = value;
         OnPropertyChanged();
         OnPropertyChanged("Background");
+        Message = string.Empty;
       }
     }
 
@@ -74,13 +97,15 @@ namespace MicroManager
         {
           case "Running":
             return new SolidColorBrush(Color.FromRgb(34, 177, 76));
-          default:
+          case "Stopped":
             return new SolidColorBrush(Color.FromRgb(237, 28, 36));
+          default:
+            return new SolidColorBrush(Colors.Yellow);
         }
       }
     }
 
-    internal async void StartCommandExecuted()
+    internal async Task StartCommandExecuted()
     {
       try
       {
@@ -89,8 +114,7 @@ namespace MicroManager
       }
       catch (Exception exception)
       {
-        var message = exception.Message + " " + exception.InnerException?.Message;
-        MessageBox.Show(message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
+        Message = exception.Message + " " + exception.InnerException?.Message;
       }
       finally
       {
@@ -98,7 +122,7 @@ namespace MicroManager
       }
     }
 
-    internal async void StopCommandExecuted()
+    internal async Task StopCommandExecuted()
     {
       try
       {
@@ -107,8 +131,7 @@ namespace MicroManager
       }
       catch (Exception exception)
       {
-        var message = exception.Message + " " + exception.InnerException?.Message;
-        MessageBox.Show(message, "MicroManager", MessageBoxButton.OK, MessageBoxImage.Error);
+        Message = exception.Message + " " + exception.InnerException?.Message;
       }
       finally
       {
@@ -116,15 +139,15 @@ namespace MicroManager
       }
     }
 
-    internal void StartStopToggleCommandExecuted()
+    internal async void StartStopToggleCommandExecuted()
     {
       switch (State)
       {
         case "Running":
-          StopCommandExecuted();
+          await StopCommandExecuted();
           break;
         case "Stopped":
-          StartCommandExecuted();
+          await StartCommandExecuted();
           break;
       }
     }

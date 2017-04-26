@@ -20,7 +20,7 @@
         <Setter.Value>
           <ControlTemplate TargetType="Button">
             <Grid Background="{TemplateBinding Background}">
-              <ContentPresenter Margin="2" />
+              <ContentPresenter Margin="2" VerticalAlignment="Center" />
             </Grid>
           </ControlTemplate>
         </Setter.Value>
@@ -85,7 +85,7 @@
              ItemsSource="{Binding ServiceInfoViewModels}">
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <StackPanel Orientation="Horizontal">
+          <StackPanel Orientation="Horizontal" Height="25">
             <CheckBox Margin="0,0,10,0"
                       VerticalAlignment="Center"
                       IsChecked="{Binding Included}" />
@@ -94,6 +94,7 @@
                     Content="{Binding Name}"
                     IsEnabled="{Binding IsEnabled}"
                     Style="{StaticResource ToggleButtonStyle}" />
+            <Label Content="{Binding Message}"/>
           </StackPanel>
         </DataTemplate>
       </ListBox.ItemTemplate>
