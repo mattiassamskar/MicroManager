@@ -10,18 +10,19 @@ namespace MicroManager
   {
     private readonly IServiceHandler _serviceHandler;
 
-    private bool _isEnabled = true;
-
-    private bool _included = true;
-
-    public ServiceInfo _serviceInfo;
-
+    private string _name;
+    private string _state;
+    private bool _isEnabled;
+    private bool _included;
     private string _message;
 
     public ServiceInfoViewModel(IServiceHandler serviceHandler, ServiceInfo serviceInfo)
     {
       _serviceHandler = serviceHandler;
-      _serviceInfo = serviceInfo;
+      Name = serviceInfo.Name;
+      State = serviceInfo.State;
+      IsEnabled = true;
+      Included = true;
       StartStopToggleCommand = new RelayCommand(() => IsEnabled, StartStopToggleCommandExecuted);
 
       _serviceHandler.ServiceInfosObservable.Where(s => s.Name == Name).Subscribe(s => State = s.State);
@@ -31,10 +32,10 @@ namespace MicroManager
 
     public string Name
     {
-      get { return _serviceInfo.Name; }
+      get { return _name; }
       set
       {
-        _serviceInfo.Name = value;
+        _name = value;
         OnPropertyChanged();
       }
     }
@@ -54,10 +55,10 @@ namespace MicroManager
 
     public string State
     {
-      get { return _serviceInfo.State; }
+      get { return _state; }
       set
       {
-        _serviceInfo.State = value;
+        _state = value;
         Message = string.Empty;
         OnPropertyChanged();
         OnPropertyChanged("Background");
@@ -108,7 +109,7 @@ namespace MicroManager
       try
       {
         IsEnabled = false;
-        await Task.Run(() => _serviceHandler.StartService(_serviceInfo.Name));
+        await Task.Run(() => _serviceHandler.StartService(Name));
       }
       catch (Exception exception)
       {
@@ -125,7 +126,7 @@ namespace MicroManager
       try
       {
         IsEnabled = false;
-        await Task.Run(() => _serviceHandler.StopService(_serviceInfo.Name));
+        await Task.Run(() => _serviceHandler.StopService(Name));
       }
       catch (Exception exception)
       {

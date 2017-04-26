@@ -13,7 +13,5 @@ namespace MicroManager
     public string Name { get; set; }
 
     public string State { get; set; }
-
-    public bool Included { get; set; }
   }
 }

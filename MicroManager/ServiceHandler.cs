@@ -9,9 +9,27 @@ namespace MicroManager
 {
   public class ServiceHandler : IServiceHandler
   {
-    private ManagementEventWatcher EventWatcher { get; set; }
+    private ManagementEventWatcher EventWatcher { get; }
 
     public Subject<ServiceInfo> ServiceInfosObservable { get; } = new Subject<ServiceInfo>();
+
+    public ServiceHandler()
+    {
+      EventWatcher =
+        new ManagementEventWatcher(
+          new WqlEventQuery(
+            "select * from __InstanceModificationEvent within 1 " + "where TargetInstance isa 'Win32_Service'"));
+
+      EventWatcher.EventArrived += (sender, eventArrivedEventArgs) =>
+      {
+        var managementBaseObject =
+          (ManagementBaseObject)eventArrivedEventArgs.NewEvent.Properties["TargetInstance"].Value;
+
+        ServiceInfosObservable.OnNext(new ServiceInfo(managementBaseObject));
+      };
+
+      EventWatcher.Start();
+    }
 
     public void StartService(string name)
     {
@@ -35,20 +53,6 @@ namespace MicroManager
 
     public IEnumerable<ServiceInfo> GetServiceInfos(string filter)
     {
-      EventWatcher =
-        new ManagementEventWatcher(
-          new WqlEventQuery(
-            "select * from __InstanceModificationEvent within 1 " + "where TargetInstance isa 'Win32_Service'"));
-
-      EventWatcher.EventArrived += (sender, eventArrivedEventArgs) =>
-        {
-          var managementBaseObject =
-            (ManagementBaseObject)eventArrivedEventArgs.NewEvent.Properties["TargetInstance"].Value;
-
-          ServiceInfosObservable.OnNext(new ServiceInfo(managementBaseObject));
-        };
-      EventWatcher.Start();
-
       var managementObjectSearcher = new ManagementObjectSearcher(
         "root\\cimv2",
         $"select * from Win32_Service where Name like '%{filter}%'");
