@@ -77,6 +77,8 @@ namespace MicroManager
       _serviceHandler.GetServiceInfos(SearchString)
         .ToList()
         .ForEach(s => ServiceInfoViewModels.Add(new ServiceInfoViewModel(_serviceHandler, s)));
+
+      UpdateServiceInfosObservable();
     }
 
     private async void StartServicesCommandExecuted()
@@ -111,7 +113,17 @@ namespace MicroManager
 
     private void ServiceInfoViewModelChanged(object sender, PropertyChangedEventArgs e)
     {
-      ServiceInfosObservable.OnNext(ServiceInfoViewModels.Select(s => s._serviceInfo).ToList());
+      UpdateServiceInfosObservable();
+    }
+
+    private void UpdateServiceInfosObservable()
+    {
+      ServiceInfosObservable.OnNext(ServiceInfoViewModels.Select(s => new ServiceInfoViewModel.ServiceInfo
+      {
+        Name = s.Name,
+        State = s.State,
+        Included = s.Included
+      }).ToList());
     }
   }
 }

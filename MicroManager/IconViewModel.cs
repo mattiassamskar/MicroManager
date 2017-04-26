@@ -19,7 +19,7 @@ namespace MicroManager
             }
             else
             {
-              ApplicationIcon = serviceInfos.Where(si => si.Enabled).All(si => si.State == "Running")
+              ApplicationIcon = serviceInfos.Where(si => si.Included).All(si => si.State == "Running")
                                   ? "MicroManager-Green.ico"
                                   : "MicroManager-Red.ico";
             }

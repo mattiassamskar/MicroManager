@@ -57,12 +57,10 @@ namespace MicroManager
       get { return _serviceInfo.State; }
       set
       {
-        if (_serviceInfo.State == value) return;
-
         _serviceInfo.State = value;
+        Message = string.Empty;
         OnPropertyChanged();
         OnPropertyChanged("Background");
-        Message = string.Empty;
       }
     }
 
@@ -158,7 +156,7 @@ namespace MicroManager
 
       public string State { get; set; }
 
-      public bool Enabled { get; set; }
+      public bool Included { get; set; }
     }
   }
 }
