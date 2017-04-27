@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace MicroManager
 {
-  using System.Threading.Tasks;
-
   public class ServiceInfoViewModel : ViewModelBase
   {
     private readonly IServiceHandler _serviceHandler;
@@ -58,6 +57,8 @@ namespace MicroManager
       get { return _state; }
       set
       {
+        if (_state == value) return;
+
         _state = value;
         Message = string.Empty;
         OnPropertyChanged();
