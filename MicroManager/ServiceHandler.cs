@@ -51,6 +51,21 @@ namespace MicroManager
       service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
     }
 
+    public void ToggleService(string name)
+    {
+      var service = new ServiceController(name);
+
+      switch (service.Status)
+      {
+          case ServiceControllerStatus.Running:
+            StopService(name);
+            break;
+          case ServiceControllerStatus.Stopped:
+            StartService(name);
+            break;
+      }
+    }
+
     public IEnumerable<ServiceInfo> GetServiceInfos(string filter)
     {
       var managementObjectSearcher = new ManagementObjectSearcher(

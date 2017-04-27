@@ -96,7 +96,7 @@
                       IsChecked="{Binding Included}" />
             <Button Grid.Column="1"
                     Background="{Binding Background}"
-                    Command="{Binding StartStopToggleCommand}"
+                    Command="{Binding ToggleCommand}"
                     Content="{Binding Name}"
                     IsEnabled="{Binding IsEnabled}"
                     Style="{StaticResource ToggleButtonStyle}" />

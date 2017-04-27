@@ -11,6 +11,8 @@ namespace MicroManager
 
     void StopService(string name);
 
+    void ToggleService(string name);
+
     IEnumerable<ServiceInfo> GetServiceInfos(string filter);
   }
 }

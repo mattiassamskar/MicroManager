@@ -22,12 +22,12 @@ namespace MicroManager
       State = serviceInfo.State;
       IsEnabled = true;
       Included = true;
-      StartStopToggleCommand = new RelayCommand(() => IsEnabled, StartStopToggleCommandExecuted);
+      ToggleCommand = new RelayCommand(() => IsEnabled, ToggleCommandExecuted);
 
       _serviceHandler.ServiceInfosObservable.Where(s => s.Name == Name).Subscribe(s => State = s.State);
     }
 
-    public RelayCommand StartStopToggleCommand { get; set; }
+    public RelayCommand ToggleCommand { get; set; }
 
     public string Name
     {
@@ -107,27 +107,25 @@ namespace MicroManager
 
     public async Task StartServiceAsync()
     {
-      try
-      {
-        IsEnabled = false;
-        await Task.Run(() => _serviceHandler.StartService(Name));
-      }
-      catch (Exception exception)
-      {
-        Message = exception.Message + " " + exception.InnerException?.Message;
-      }
-      finally
-      {
-        IsEnabled = true;
-      }
+      await RunAsync(() => _serviceHandler.StartService(Name));
     }
 
     public async Task StopServiceAsync()
     {
+      await RunAsync(() => _serviceHandler.StopService(Name));
+    }
+
+    public async void ToggleCommandExecuted()
+    {
+      await RunAsync(() => _serviceHandler.ToggleService(Name));
+    }
+
+    private async Task RunAsync(Action action)
+    {
       try
       {
         IsEnabled = false;
-        await Task.Run(() => _serviceHandler.StopService(Name));
+        await Task.Run(action);
       }
       catch (Exception exception)
       {
@@ -136,19 +134,6 @@ namespace MicroManager
       finally
       {
         IsEnabled = true;
-      }
-    }
-
-    public async void StartStopToggleCommandExecuted()
-    {
-      switch (State)
-      {
-        case "Running":
-          await StopServiceAsync();
-          break;
-        case "Stopped":
-          await StartServiceAsync();
-          break;
       }
     }
   }
