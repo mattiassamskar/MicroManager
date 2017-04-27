@@ -12,6 +12,8 @@ namespace MicroManager
     private readonly IServiceHandler _serviceHandler;
     private string _searchString;
     private bool _isEnabled = true;
+    private bool _topMost;
+    private double _scale = 1;
 
     public MainWindowViewModel(IServiceHandler serviceHandler)
     {
@@ -65,6 +67,30 @@ namespace MicroManager
       set
       {
         _isEnabled = value;
+        OnPropertyChanged();
+      }
+    }
+
+    public bool TopMost
+    {
+      get { return _topMost; }
+
+      set
+      {
+        _topMost = value;
+        OnPropertyChanged();
+      }
+    }
+
+    public double Scale
+    {
+      get
+      {
+        return _scale;
+      }
+      set
+      {
+        _scale = value;
         OnPropertyChanged();
       }
     }
