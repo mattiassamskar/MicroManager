@@ -2,7 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MicroManager"
-        Icon="{Binding IconViewModel.ApplicationIcon}"
         Style="{DynamicResource MyStyle}"
         Topmost="{Binding TopMost}">
   <Window.Resources>
@@ -26,6 +25,25 @@
       </Setter>
     </Style>
   </Window.Resources>
+  <Window.TaskbarItemInfo>
+    <TaskbarItemInfo>
+      <TaskbarItemInfo.Overlay>
+        <DrawingImage>
+          <DrawingImage.Drawing>
+            <DrawingGroup>
+              <DrawingGroup.Children>
+                <GeometryDrawing Brush="{Binding IconViewModel.OverlayColor}">
+                  <GeometryDrawing.Geometry>
+                    <RectangleGeometry Rect="0 0 9 9" />
+                  </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+              </DrawingGroup.Children>
+            </DrawingGroup>
+          </DrawingImage.Drawing>
+        </DrawingImage>
+      </TaskbarItemInfo.Overlay>
+    </TaskbarItemInfo>
+  </Window.TaskbarItemInfo>
   <Grid>
     <Grid>
       <Grid.RowDefinitions>
