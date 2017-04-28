@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MicroManager
 {
@@ -14,6 +15,7 @@ namespace MicroManager
     private bool _isEnabled = true;
     private bool _topMost;
     private double _scale = 1;
+    private bool _configVisible;
 
     public MainWindowViewModel(IServiceHandler serviceHandler)
     {
@@ -22,6 +24,7 @@ namespace MicroManager
       SearchCommand = new RelayCommand(() => IsEnabled, SearchCommandExecuted);
       StartServicesCommand = new RelayCommand(() => IsEnabled, StartServicesCommandExecuted);
       StopServicesCommand = new RelayCommand(() => IsEnabled, StopServicesCommandExecuted);
+      ConfigVisibleCommand = new RelayCommand(() => true, ConfigVisibleCommandExecuted);
 
       IconViewModel = new IconViewModel(ServiceInfosObservable);
 
@@ -47,6 +50,8 @@ namespace MicroManager
     public RelayCommand StartServicesCommand { get; set; }
 
     public RelayCommand StopServicesCommand { get; set; }
+
+    public RelayCommand ConfigVisibleCommand { get; set; }
 
     public string SearchString
     {
@@ -95,6 +100,17 @@ namespace MicroManager
       }
     }
 
+    public Visibility ConfigVisible
+    {
+      get { return _configVisible ? Visibility.Visible : Visibility.Collapsed; }
+
+      set
+      {
+        _configVisible = value == Visibility.Visible;
+        OnPropertyChanged();
+      }
+    }
+
     private void SearchCommandExecuted()
     {
       ServiceInfoViewModels.Clear();
@@ -118,6 +134,11 @@ namespace MicroManager
       IsEnabled = false;
       await Task.WhenAll(ServiceInfoViewModels.Where(s => s.Included).Select(s => s.StopServiceAsync()).ToArray());
       IsEnabled = true;
+    }
+
+    private void ConfigVisibleCommandExecuted()
+    {
+      ConfigVisible = ConfigVisible == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
     }
 
     private void ServiceInfoViewModelChanged(object sender, PropertyChangedEventArgs e)

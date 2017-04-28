@@ -2,8 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MicroManager"
-        Width="500"
-        Height="600"
         Icon="{Binding IconViewModel.ApplicationIcon}"
         Style="{DynamicResource MyStyle}"
         Topmost="{Binding TopMost}">
@@ -29,100 +27,123 @@
     </Style>
   </Window.Resources>
   <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="*" />
-      <RowDefinition Height="30" />
-    </Grid.RowDefinitions>
-    <Grid Grid.Row="0">
-      <Grid.LayoutTransform>
-        <ScaleTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
-      </Grid.LayoutTransform>
-      <Grid FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="40" />
-          <RowDefinition Height="*" />
-          <RowDefinition Height="40" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid Grid.Row="0">
+        <Grid.LayoutTransform>
+          <ScaleTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
+        </Grid.LayoutTransform>
+        <Grid FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+            <RowDefinition Height="40" />
+          </Grid.RowDefinitions>
           <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="100" />
-          </Grid.ColumnDefinitions>
-          <TextBox Name="SearchTextBox"
-                   Grid.Row="0"
-                   Grid.Column="0"
-                   Margin="5"
-                   VerticalContentAlignment="Center"
-                   IsEnabled="{Binding IsEnabled}"
-                   Text="{Binding SearchString,
-                                  UpdateSourceTrigger=PropertyChanged}">
-            <TextBox.InputBindings>
-              <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
-            </TextBox.InputBindings>
-          </TextBox>
-          <Button Grid.Row="0"
-                  Grid.Column="1"
-                  Margin="5"
-                  Command="{Binding SearchCommand}"
-                  Content="Search"
-                  IsEnabled="{Binding IsEnabled}" />
-        </Grid>
-        <Grid Row="2">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
-            <ColumnDefinition Width="100" />
             <ColumnDefinition Width="*" />
           </Grid.ColumnDefinitions>
-          <Button Grid.Column="0"
-                  Margin="5"
-                  Command="{Binding StartServicesCommand}"
-                  Content="Start all"
-                  IsEnabled="{Binding IsEnabled}" />
-          <Button Grid.Column="1"
-                  Margin="5"
-                  Command="{Binding StopServicesCommand}"
-                  Content="Stop all"
-                  IsEnabled="{Binding IsEnabled}" />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <TextBox Name="SearchTextBox"
+                     Grid.Row="0"
+                     Grid.Column="0"
+                     Margin="5"
+                     VerticalContentAlignment="Center"
+                     IsEnabled="{Binding IsEnabled}"
+                     Text="{Binding SearchString,
+                                    UpdateSourceTrigger=PropertyChanged}">
+              <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+              </TextBox.InputBindings>
+            </TextBox>
+            <Button Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="5"
+                    Command="{Binding SearchCommand}"
+                    Content="Search"
+                    IsEnabled="{Binding IsEnabled}" />
+          </Grid>
+          <Grid Row="2">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Margin="5"
+                    Command="{Binding StartServicesCommand}"
+                    Content="Start all"
+                    IsEnabled="{Binding IsEnabled}" />
+            <Button Grid.Column="1"
+                    Margin="5"
+                    Command="{Binding StopServicesCommand}"
+                    Content="Stop all"
+                    IsEnabled="{Binding IsEnabled}" />
+            <DockPanel Grid.Column="2"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom">
+              <Button Width="18"
+                      Height="18"
+                      Margin="5"
+                      Command="{Binding ConfigVisibleCommand}"
+                      Content="🔧"
+                      FontSize="10" />
+            </DockPanel>
+          </Grid>
+          <ListBox Grid.Row="1"
+                   Grid.Column="0"
+                   Margin="5"
+                   ItemsSource="{Binding ServiceInfoViewModels}">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <CheckBox Grid.Column="0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding Included}" />
+                  <Button Grid.Column="1"
+                          Background="{Binding Background}"
+                          Command="{Binding ToggleCommand}"
+                          Content="{Binding Name}"
+                          IsEnabled="{Binding IsEnabled}"
+                          Style="{StaticResource ToggleButtonStyle}" />
+                  <Label Grid.Column="2"
+                         Content="{Binding Message}"
+                         ToolTip="{Binding Message}" />
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
         </Grid>
-        <ListBox Grid.Row="1"
-                 Grid.Column="0"
-                 Margin="5"
-                 ItemsSource="{Binding ServiceInfoViewModels}">
-          <ListBox.ItemTemplate>
-            <DataTemplate>
-              <Grid>
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="22" />
-                  <ColumnDefinition Width="Auto" />
-                  <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <CheckBox Grid.Column="0"
-                          VerticalAlignment="Center"
-                          IsChecked="{Binding Included}" />
-                <Button Grid.Column="1"
-                        Background="{Binding Background}"
-                        Command="{Binding ToggleCommand}"
-                        Content="{Binding Name}"
-                        IsEnabled="{Binding IsEnabled}"
-                        Style="{StaticResource ToggleButtonStyle}" />
-                <Label Grid.Column="2"
-                       Content="{Binding Message}"
-                       ToolTip="{Binding Message}" />
-              </Grid>
-            </DataTemplate>
-          </ListBox.ItemTemplate>
-        </ListBox>
       </Grid>
     </Grid>
-    <Grid Grid.Row="1">
+    <Grid Height="50"
+          Margin="20, 20, 20, 30"
+          VerticalAlignment="Bottom"
+          Background="DarkGray"
+          Visibility="{Binding ConfigVisible}"
+          ZIndex="1000">
+      <Grid.Effect>
+        <DropShadowEffect ShadowDepth="2" />
+      </Grid.Effect>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
-      <CheckBox Margin="5" IsChecked="{Binding TopMost}">Always on top</CheckBox>
+      <CheckBox Margin="5"
+                VerticalAlignment="Center"
+                Content="Always on top"
+                IsChecked="{Binding TopMost}" />
       <Slider Grid.Column="1"
               Margin="5"
               VerticalAlignment="Center"
