@@ -33,6 +33,27 @@
       <Component>
         <File Id="MicroManager.exe" Source="..\MicroManager\bin\Release\MicroManager.exe"/>
       </Component>
+      <Component>
+        <File Id="MicroManager.exe.config" Source="..\MicroManager\bin\Release\MicroManager.exe.config"/>
+      </Component>
+      <Component>
+        <File Id="SimpleInjector.dll" Source="..\MicroManager\bin\Release\SimpleInjector.dll"/>
+      </Component>
+      <Component>
+        <File Id="System.Reactive.Core.dll" Source="..\MicroManager\bin\Release\System.Reactive.Core.dll"/>
+      </Component>
+      <Component>
+        <File Id="System.Reactive.Interfaces.dll" Source="..\MicroManager\bin\Release\System.Reactive.Interfaces.dll"/>
+      </Component>
+      <Component>
+        <File Id="System.Reactive.Linq.dll" Source="..\MicroManager\bin\Release\System.Reactive.Linq.dll"/>
+      </Component>
+      <Component>
+        <File Id="System.Reactive.PlatformServices.dll" Source="..\MicroManager\bin\Release\System.Reactive.PlatformServices.dll"/>
+      </Component>
+      <Component>
+        <File Id="System.Reactive.Windows.Threading.dll" Source="..\MicroManager\bin\Release\System.Reactive.Windows.Threading.dll"/>
+      </Component>
     </ComponentGroup>
   </Product>
 </Wix>
