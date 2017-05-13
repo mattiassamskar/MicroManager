@@ -3,26 +3,33 @@
   <Profiles />
   <Settings>
     <Setting Name="WindowPlacement" Type="MicroManager.WindowPlacement" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;WindowPlacement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;length&gt;0&lt;/length&gt;
-  &lt;flags&gt;0&lt;/flags&gt;
-  &lt;showCmd&gt;0&lt;/showCmd&gt;
-  &lt;minPosition&gt;
-    &lt;X&gt;0&lt;/X&gt;
-    &lt;Y&gt;0&lt;/Y&gt;
-  &lt;/minPosition&gt;
-  &lt;maxPosition&gt;
-    &lt;X&gt;0&lt;/X&gt;
-    &lt;Y&gt;0&lt;/Y&gt;
-  &lt;/maxPosition&gt;
-  &lt;normalPosition&gt;
-    &lt;Left&gt;0&lt;/Left&gt;
-    &lt;Top&gt;0&lt;/Top&gt;
-    &lt;Right&gt;0&lt;/Right&gt;
-    &lt;Bottom&gt;0&lt;/Bottom&gt;
-  &lt;/normalPosition&gt;
-&lt;/WindowPlacement&gt;</Value>
+      <Value Profile="(Default)">
+          &lt;WindowPlacement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+            &lt;length&gt;50&lt;/length&gt;
+            &lt;flags&gt;0&lt;/flags&gt;
+            &lt;showCmd&gt;1&lt;/showCmd&gt;
+            &lt;minPosition&gt;
+              &lt;X&gt;0&lt;/X&gt;
+              &lt;Y&gt;0&lt;/Y&gt;
+            &lt;/minPosition&gt;
+            &lt;maxPosition&gt;
+              &lt;X&gt;0&lt;/X&gt;
+              &lt;Y&gt;0&lt;/Y&gt;
+            &lt;/maxPosition&gt;
+            &lt;normalPosition&gt;
+              &lt;Left&gt;800&lt;/Left&gt;
+              &lt;Top&gt;200&lt;/Top&gt;
+              &lt;Right&gt;1200&lt;/Right&gt;
+              &lt;Bottom&gt;800&lt;/Bottom&gt;
+            &lt;/normalPosition&gt;
+          &lt;/WindowPlacement&gt;
+        </Value>
+    </Setting>
+    <Setting Name="Scale" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="TopMost" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

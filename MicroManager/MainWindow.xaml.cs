@@ -17,6 +17,8 @@ namespace MicroManager
     {
       base.OnSourceInitialized(e);
 
+      ((MainWindowViewModel) DataContext).Scale = Settings.Default.Scale;
+      ((MainWindowViewModel) DataContext).TopMost = Settings.Default.TopMost;
       WindowPlacementHandler.LoadWindowPlacement(this);
     }
 
@@ -24,6 +26,8 @@ namespace MicroManager
     {
       base.OnClosing(e);
 
+      Settings.Default.Scale = ((MainWindowViewModel) DataContext).Scale;
+      Settings.Default.TopMost = ((MainWindowViewModel) DataContext).TopMost;
       WindowPlacementHandler.SaveWindowPlacement(this);
     }
   }

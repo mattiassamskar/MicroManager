@@ -25,32 +25,57 @@ namespace MicroManager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<WindowPlacement xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <length>0</length>
-  <flags>0</flags>
-  <showCmd>0</showCmd>
-  <minPosition>
-    <X>0</X>
-    <Y>0</Y>
-  </minPosition>
-  <maxPosition>
-    <X>0</X>
-    <Y>0</Y>
-  </maxPosition>
-  <normalPosition>
-    <Left>0</Left>
-    <Top>0</Top>
-    <Right>0</Right>
-    <Bottom>0</Bottom>
-  </normalPosition>
-</WindowPlacement>")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"
+          <WindowPlacement xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+            <length>50</length>
+            <flags>0</flags>
+            <showCmd>1</showCmd>
+            <minPosition>
+              <X>0</X>
+              <Y>0</Y>
+            </minPosition>
+            <maxPosition>
+              <X>0</X>
+              <Y>0</Y>
+            </maxPosition>
+            <normalPosition>
+              <Left>800</Left>
+              <Top>200</Top>
+              <Right>1200</Right>
+              <Bottom>800</Bottom>
+            </normalPosition>
+          </WindowPlacement>
+        ")]
         public global::MicroManager.WindowPlacement WindowPlacement {
             get {
                 return ((global::MicroManager.WindowPlacement)(this["WindowPlacement"]));
             }
             set {
                 this["WindowPlacement"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double Scale {
+            get {
+                return ((double)(this["Scale"]));
+            }
+            set {
+                this["Scale"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TopMost {
+            get {
+                return ((bool)(this["TopMost"]));
+            }
+            set {
+                this["TopMost"] = value;
             }
         }
     }
