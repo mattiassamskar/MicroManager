@@ -7,39 +7,43 @@ namespace MicroManager
 {
   public class IconViewModel : ViewModelBase
   {
-    private Brush _overlayColor;
+    private readonly List<StateEvaluator> _stateEvaluators = new List<StateEvaluator>();
+    private Brush _iconBrush;
 
     public IconViewModel(IObservable<IEnumerable<string>> statesObservable)
     {
+      _stateEvaluators.Add(new StateEvaluator(states => !states.Any(), Colors.Transparent));
+      _stateEvaluators.Add(new StateEvaluator(states => states.All(s => s == "Running"), Color.FromRgb(34, 177, 76)));
+      _stateEvaluators.Add(new StateEvaluator(states => states.All(s => s == "Stopped"), Color.FromRgb(237, 28, 36)));
+      _stateEvaluators.Add(new StateEvaluator(_ => true, Colors.Yellow));
+
       statesObservable.Subscribe(
-        serviceInfos =>
-          {
-            if (!serviceInfos.Any())
-            {
-              OverlayColor = new SolidColorBrush(Colors.Transparent);
-            }
-            else
-            {
-              OverlayColor = serviceInfos.All(si => si == "Running")
-                               ? new SolidColorBrush(Color.FromRgb(34, 177, 76))
-                               : new SolidColorBrush(Color.FromRgb(237, 28, 36));
-            }
-          });
+        states => IconBrush = new SolidColorBrush(_stateEvaluators.First(e => e.Evaluator(states)).Color));
     }
 
-    public Brush OverlayColor
+    public Brush IconBrush
     {
-      get
-      {
-        return _overlayColor;
-      }
+      get { return _iconBrush; }
 
       set
       {
         value.Freeze();
-        _overlayColor = value;
+        _iconBrush = value;
         OnPropertyChanged();
       }
+    }
+
+    private class StateEvaluator
+    {
+      public StateEvaluator(Func<IEnumerable<string>, bool> evaluator, Color color)
+      {
+        Evaluator = evaluator;
+        Color = color;
+      }
+
+      public Func<IEnumerable<string>, bool> Evaluator { get; }
+
+      public Color Color { get; }
     }
   }
 }

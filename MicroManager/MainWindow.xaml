@@ -32,7 +32,7 @@
           <DrawingImage.Drawing>
             <DrawingGroup>
               <DrawingGroup.Children>
-                <GeometryDrawing Brush="{Binding IconViewModel.OverlayColor}">
+                <GeometryDrawing Brush="{Binding IconViewModel.IconBrush}">
                   <GeometryDrawing.Geometry>
                     <RectangleGeometry Rect="0 0 9 9" />
                   </GeometryDrawing.Geometry>
