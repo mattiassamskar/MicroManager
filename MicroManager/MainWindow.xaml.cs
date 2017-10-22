@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace MicroManager
 {
@@ -11,6 +12,11 @@ namespace MicroManager
       InitializeComponent();
 
       DataContext = mainWindowViewModel;
+      MouseDown += (sender, args) =>
+      {
+        if (args.ChangedButton == MouseButton.Left)
+          DragMove();
+      };
     }
 
     protected override void OnSourceInitialized(EventArgs e)
