@@ -23,15 +23,18 @@ namespace MicroManager
       IsEnabled = true;
       Included = true;
       ToggleCommand = new RelayCommand(() => IsEnabled, ToggleCommandExecuted);
+      ToggleIncludedCommand = new RelayCommand(() => IsEnabled, ToggleIncludedCommandExecuted);
 
       _serviceHandler.ServiceInfosObservable.Where(s => s.Name == Name).Subscribe(s => State = s.State);
     }
 
     public RelayCommand ToggleCommand { get; set; }
 
+    public RelayCommand ToggleIncludedCommand { get; set; }
+
     public string Name
     {
-      get { return _name; }
+      get => _name;
       set
       {
         _name = value;
@@ -41,10 +44,7 @@ namespace MicroManager
 
     public string Message
     {
-      get
-      {
-        return _message;
-      }
+      get => _message;
       private set
       {
         _message = value;
@@ -54,13 +54,13 @@ namespace MicroManager
 
     public string State
     {
-      get { return _state; }
+      get => _state;
       set
       {
         if (_state == value) return;
 
         _state = value;
-        Message = string.Empty;
+        Message = State;
         OnPropertyChanged();
         OnPropertyChanged("Background");
       }
@@ -68,20 +68,18 @@ namespace MicroManager
 
     public bool Included
     {
-      get { return _included; }
+      get => _included;
       set
       {
         _included = value;
         OnPropertyChanged();
+        OnPropertyChanged("Background");
       }
     }
 
     public bool IsEnabled
     {
-      get
-      {
-        return _isEnabled;
-      }
+      get => _isEnabled;
       set
       {
         _isEnabled = value;
@@ -93,6 +91,9 @@ namespace MicroManager
     {
       get
       {
+        if (!Included)
+          return new SolidColorBrush(Colors.Gray);
+
         switch (State)
         {
           case "Running":
@@ -118,6 +119,11 @@ namespace MicroManager
     public async void ToggleCommandExecuted()
     {
       await RunAsync(() => _serviceHandler.ToggleService(Name));
+    }
+
+    public void ToggleIncludedCommandExecuted()
+    {
+      Included = !Included;
     }
 
     private async Task RunAsync(Action action)

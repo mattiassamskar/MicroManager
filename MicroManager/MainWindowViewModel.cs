@@ -55,7 +55,7 @@ namespace MicroManager
 
     public string SearchString
     {
-      get { return _searchString; }
+      get => _searchString;
 
       set
       {
@@ -67,7 +67,7 @@ namespace MicroManager
 
     public bool IsEnabled
     {
-      get { return _isEnabled; }
+      get => _isEnabled;
 
       set
       {
@@ -78,7 +78,7 @@ namespace MicroManager
 
     public bool TopMost
     {
-      get { return _topMost; }
+      get => _topMost;
 
       set
       {
@@ -89,10 +89,7 @@ namespace MicroManager
 
     public double Scale
     {
-      get
-      {
-        return _scale;
-      }
+      get => _scale;
       set
       {
         _scale = value;
@@ -102,7 +99,7 @@ namespace MicroManager
 
     public Visibility ConfigVisible
     {
-      get { return _configVisible ? Visibility.Visible : Visibility.Collapsed; }
+      get => _configVisible ? Visibility.Visible : Visibility.Collapsed;
 
       set
       {

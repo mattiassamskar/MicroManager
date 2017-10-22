@@ -117,28 +117,27 @@
           <ListBox Grid.Row="1"
                    Grid.Column="0"
                    Margin="5"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                   ScrollViewer.VerticalScrollBarVisibility="Disabled"
                    ItemsSource="{Binding ServiceInfoViewModels}">
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal" />
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
               <DataTemplate>
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="22" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                  </Grid.ColumnDefinitions>
-                  <CheckBox Grid.Column="0"
-                            VerticalAlignment="Center"
-                            IsChecked="{Binding Included}" />
-                  <Button Grid.Column="1"
-                          Background="{Binding Background}"
-                          Command="{Binding ToggleCommand}"
-                          Content="{Binding Name}"
-                          IsEnabled="{Binding IsEnabled}"
-                          Style="{StaticResource ToggleButtonStyle}" />
-                  <Label Grid.Column="2"
-                         Content="{Binding Message}"
-                         ToolTip="{Binding Message}" />
-                </Grid>
+                <Button
+                  Background="{Binding Background}"
+                  Command="{Binding ToggleCommand}"
+                  Content="{Binding Name}"
+                  ToolTip="{Binding Message}"
+                  IsEnabled="{Binding IsEnabled}"
+                  Style="{StaticResource ToggleButtonStyle}">
+                  <Button.InputBindings>
+                    <MouseBinding Gesture="RightClick" Command="{Binding ToggleIncludedCommand}" />
+                  </Button.InputBindings>
+                </Button>
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>
