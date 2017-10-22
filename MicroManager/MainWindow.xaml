@@ -52,101 +52,92 @@
   </Window.TaskbarItemInfo>
   <Grid>
     <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
-        <RowDefinition Height="Auto" />
-      </Grid.RowDefinitions>
-      <Grid Grid.Row="0">
-        <Grid.LayoutTransform>
-          <ScaleTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
-        </Grid.LayoutTransform>
-        <Grid FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition />
-            <RowDefinition Height="40" />
-          </Grid.RowDefinitions>
+      <Grid.LayoutTransform>
+        <ScaleTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
+      </Grid.LayoutTransform>
+      <Grid FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="40" />
+          <RowDefinition />
+          <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <Grid>
           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="100" />
           </Grid.ColumnDefinitions>
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition />
-              <ColumnDefinition Width="100" />
-            </Grid.ColumnDefinitions>
-            <TextBox Name="SearchTextBox"
-                     Grid.Row="0"
-                     Grid.Column="0"
-                     Margin="5"
-                     VerticalContentAlignment="Center"
-                     IsEnabled="{Binding IsEnabled}"
-                     Text="{Binding SearchString,
-                                    UpdateSourceTrigger=PropertyChanged}">
-              <TextBox.InputBindings>
-                <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
-              </TextBox.InputBindings>
-            </TextBox>
-            <Button Grid.Row="0"
-                    Grid.Column="1"
-                    Margin="5"
-                    Command="{Binding SearchCommand}"
-                    Content="Search"
-                    IsEnabled="{Binding IsEnabled}" />
-          </Grid>
-          <Grid Row="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="100" />
-              <ColumnDefinition Width="100" />
-              <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0"
-                    Margin="5"
-                    Command="{Binding StartServicesCommand}"
-                    Content="Start all"
-                    IsEnabled="{Binding IsEnabled}" />
-            <Button Grid.Column="1"
-                    Margin="5"
-                    Command="{Binding StopServicesCommand}"
-                    Content="Stop all"
-                    IsEnabled="{Binding IsEnabled}" />
-            <DockPanel Grid.Column="2"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Bottom">
-              <Button Width="18"
-                      Height="18"
-                      Margin="5"
-                      Command="{Binding ConfigVisibleCommand}"
-                      Content="🔧"
-                      FontSize="10" />
-            </DockPanel>
-          </Grid>
-          <ListBox Grid.Row="1"
+          <TextBox Name="SearchTextBox"
+                   Grid.Row="0"
                    Grid.Column="0"
                    Margin="5"
-                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                   ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                   ItemsSource="{Binding ServiceInfoViewModels}">
-            <ListBox.ItemsPanel>
-              <ItemsPanelTemplate>
-                <WrapPanel Orientation="Horizontal" />
-              </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-              <DataTemplate>
-                <Button
-                  Background="{Binding Background}"
-                  Command="{Binding ToggleCommand}"
-                  Content="{Binding Name}"
-                  ToolTip="{Binding Message}"
-                  IsEnabled="{Binding IsEnabled}"
-                  Style="{StaticResource ToggleButtonStyle}">
-                  <Button.InputBindings>
-                    <MouseBinding Gesture="RightClick" Command="{Binding ToggleIncludedCommand}" />
-                  </Button.InputBindings>
-                </Button>
-              </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
+                   VerticalContentAlignment="Center"
+                   IsEnabled="{Binding IsEnabled}"
+                   Text="{Binding SearchString,
+                                    UpdateSourceTrigger=PropertyChanged}">
+            <TextBox.InputBindings>
+              <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+            </TextBox.InputBindings>
+          </TextBox>
+          <Button Grid.Row="0"
+                  Grid.Column="1"
+                  Margin="5"
+                  Command="{Binding SearchCommand}"
+                  Content="Search"
+                  IsEnabled="{Binding IsEnabled}" />
+        </Grid>
+        <ListBox Grid.Row="1"
+                 Grid.Column="0"
+                 Margin="5"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                 ItemsSource="{Binding ServiceInfoViewModels}">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Button
+                Background="{Binding Background}"
+                Command="{Binding ToggleCommand}"
+                Content="{Binding Name}"
+                ToolTip="{Binding Message}"
+                IsEnabled="{Binding IsEnabled}"
+                Style="{StaticResource ToggleButtonStyle}">
+                <Button.InputBindings>
+                  <MouseBinding Gesture="RightClick" Command="{Binding ToggleIncludedCommand}" />
+                </Button.InputBindings>
+              </Button>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <Grid Row="2">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Button Grid.Column="0"
+                  Margin="5"
+                  Command="{Binding StartServicesCommand}"
+                  Content="Start all"
+                  IsEnabled="{Binding IsEnabled}" />
+          <Button Grid.Column="1"
+                  Margin="5"
+                  Command="{Binding StopServicesCommand}"
+                  Content="Stop all"
+                  IsEnabled="{Binding IsEnabled}" />
+          <DockPanel Grid.Column="2"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Bottom">
+            <Button Width="18"
+                    Height="18"
+                    Margin="5"
+                    Command="{Binding ConfigVisibleCommand}"
+                    Content="🔧"
+                    FontSize="10" />
+          </DockPanel>
         </Grid>
       </Grid>
     </Grid>
