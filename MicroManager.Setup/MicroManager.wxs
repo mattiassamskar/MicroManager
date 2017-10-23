@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="MicroManager" Language="1033" Version="1.1.0.0" Manufacturer="Oh Snap! Development" UpgradeCode="A95C6B41-E924-418D-8F11-B27D93A5A15A">
+  <Product Id="*" Name="MicroManager" Language="1033" Version="1.2.0.0" Manufacturer="Oh Snap! Development" UpgradeCode="A95C6B41-E924-418D-8F11-B27D93A5A15A">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     <Icon Id="MicroManager.ico" SourceFile="..\MicroManager\MicroManager.ico"/>
     <Property Id="ARPPRODUCTICON" Value="MicroManager.ico" />
