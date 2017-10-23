@@ -59,7 +59,6 @@ namespace MicroManager
     public string SearchString
     {
       get => _searchString;
-
       set
       {
         _searchString = value;
@@ -71,7 +70,6 @@ namespace MicroManager
     public bool IsEnabled
     {
       get => _isEnabled;
-
       set
       {
         _isEnabled = value;
@@ -82,7 +80,6 @@ namespace MicroManager
     public bool TopMost
     {
       get => _topMost;
-
       set
       {
         _topMost = value;
@@ -103,7 +100,6 @@ namespace MicroManager
     public Visibility ConfigVisible
     {
       get => _configVisible ? Visibility.Visible : Visibility.Collapsed;
-
       set
       {
         _configVisible = value == Visibility.Visible;

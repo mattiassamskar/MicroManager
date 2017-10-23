@@ -23,8 +23,7 @@ namespace MicroManager
 
     public Brush IconBrush
     {
-      get { return _iconBrush; }
-
+      get => _iconBrush;
       set
       {
         value.Freeze();

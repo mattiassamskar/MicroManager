@@ -53,7 +53,7 @@
   </Window.TaskbarItemInfo>
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
     <DockPanel HorizontalAlignment="Right"
@@ -65,7 +65,8 @@
               Background="DarkGray"
               Command="{Binding CloseCommand}"
               Content="X"
-              FontSize="8"  FontWeight="Bold"/>
+              FontSize="8"
+              FontWeight="Bold" />
     </DockPanel>
     <Grid Grid.Row="1">
       <Grid.LayoutTransform>
