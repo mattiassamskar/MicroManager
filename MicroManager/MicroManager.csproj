@@ -108,8 +108,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ColorEvaluator.cs" />
-    <Compile Include="EvaluatorBase.cs" />
+    <Compile Include="Evaluators\ColorEvaluator.cs" />
+    <Compile Include="Evaluators\EvaluatorBase.cs" />
     <Compile Include="IconViewModel.cs" />
     <Compile Include="IServiceHandler.cs" />
     <Compile Include="WindowPlacementHandler.cs" />

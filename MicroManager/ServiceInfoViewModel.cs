@@ -12,8 +12,8 @@ namespace MicroManager
     private string _name;
     private string _state;
     private bool _isEnabled;
-    private bool _included;
-    private string _message;
+    private bool _isIncluded;
+    private string _toolTip;
 
     public ServiceInfoViewModel(IServiceHandler serviceHandler, ServiceInfo serviceInfo)
     {
@@ -21,16 +21,16 @@ namespace MicroManager
       Name = serviceInfo.Name;
       State = serviceInfo.State;
       IsEnabled = true;
-      Included = true;
+      IsIncluded = true;
       ToggleCommand = new RelayCommand(() => IsEnabled, ToggleCommandExecuted);
-      ToggleIncludedCommand = new RelayCommand(() => IsEnabled, ToggleIncludedCommandExecuted);
+      ToggleIsIncludedCommand = new RelayCommand(() => IsEnabled, ToggleIsIncludedCommandExecuted);
 
       _serviceHandler.ServiceInfosObservable.Where(s => s.Name == Name).Subscribe(s => State = s.State);
     }
 
     public RelayCommand ToggleCommand { get; set; }
 
-    public RelayCommand ToggleIncludedCommand { get; set; }
+    public RelayCommand ToggleIsIncludedCommand { get; set; }
 
     public string Name
     {
@@ -42,12 +42,12 @@ namespace MicroManager
       }
     }
 
-    public string Message
+    public string ToolTip
     {
-      get => _message;
+      get => _toolTip;
       private set
       {
-        _message = value;
+        _toolTip = value;
         OnPropertyChanged();
       }
     }
@@ -60,18 +60,18 @@ namespace MicroManager
         if (_state == value) return;
 
         _state = value;
-        Message = State;
+        ToolTip = State;
         OnPropertyChanged();
         OnPropertyChanged("Background");
       }
     }
 
-    public bool Included
+    public bool IsIncluded
     {
-      get => _included;
+      get => _isIncluded;
       set
       {
-        _included = value;
+        _isIncluded = value;
         OnPropertyChanged();
         OnPropertyChanged("Background");
       }
@@ -91,7 +91,7 @@ namespace MicroManager
     {
       get
       {
-        if (!Included)
+        if (!IsIncluded)
           return new SolidColorBrush(Colors.Gray);
 
         switch (State)
@@ -121,9 +121,9 @@ namespace MicroManager
       await RunAsync(() => _serviceHandler.ToggleService(Name));
     }
 
-    public void ToggleIncludedCommandExecuted()
+    public void ToggleIsIncludedCommandExecuted()
     {
-      Included = !Included;
+      IsIncluded = !IsIncluded;
     }
 
     private async Task RunAsync(Action action)
@@ -135,7 +135,7 @@ namespace MicroManager
       }
       catch (Exception exception)
       {
-        Message = exception.Message + " " + exception.InnerException?.Message;
+        ToolTip = exception.Message + " " + exception.InnerException?.Message;
       }
       finally
       {

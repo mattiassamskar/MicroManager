@@ -119,11 +119,11 @@
                 Background="{Binding Background}"
                 Command="{Binding ToggleCommand}"
                 Content="{Binding Name}"
-                ToolTip="{Binding Message}"
+                ToolTip="{Binding ToolTip}"
                 IsEnabled="{Binding IsEnabled}"
                 Style="{StaticResource ToggleButtonStyle}">
                 <Button.InputBindings>
-                  <MouseBinding Gesture="RightClick" Command="{Binding ToggleIncludedCommand}" />
+                  <MouseBinding Gesture="RightClick" Command="{Binding ToggleIsIncludedCommand}" />
                 </Button.InputBindings>
               </Button>
             </DataTemplate>

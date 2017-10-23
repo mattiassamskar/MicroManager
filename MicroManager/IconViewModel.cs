@@ -4,13 +4,13 @@ using System.Windows.Media;
 
 namespace MicroManager
 {
-  public partial class IconViewModel : ViewModelBase
+  public class IconViewModel : ViewModelBase
   {
     private Brush _iconBrush;
 
     public IconViewModel(IObservable<IEnumerable<string>> statesObservable)
     {
-      var colorEvaluator = new ColorEvaluator();
+      var colorEvaluator = new Evaluators.ColorEvaluator();
 
       statesObservable.Subscribe(
         states => IconBrush = new SolidColorBrush(colorEvaluator.Evaluate(states)));

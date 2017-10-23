@@ -121,14 +121,14 @@ namespace MicroManager
     private async void StartServicesCommandExecuted()
     {
       IsEnabled = false;
-      await Task.WhenAll(ServiceInfoViewModels.Where(s => s.Included).Select(s => s.StartServiceAsync()).ToArray());
+      await Task.WhenAll(ServiceInfoViewModels.Where(s => s.IsIncluded).Select(s => s.StartServiceAsync()).ToArray());
       IsEnabled = true;
     }
 
     private async void StopServicesCommandExecuted()
     {
       IsEnabled = false;
-      await Task.WhenAll(ServiceInfoViewModels.Where(s => s.Included).Select(s => s.StopServiceAsync()).ToArray());
+      await Task.WhenAll(ServiceInfoViewModels.Where(s => s.IsIncluded).Select(s => s.StopServiceAsync()).ToArray());
       IsEnabled = true;
     }
 
@@ -144,7 +144,7 @@ namespace MicroManager
 
     private void UpdateServiceInfosObservable()
     {
-      ServiceInfosObservable.OnNext(ServiceInfoViewModels.Where(s => s.Included).Select(s => s.State));
+      ServiceInfosObservable.OnNext(ServiceInfoViewModels.Where(s => s.IsIncluded).Select(s => s.State));
     }
   }
 }
