@@ -25,6 +25,7 @@ namespace MicroManager
       StartServicesCommand = new RelayCommand(() => IsEnabled, StartServicesCommandExecuted);
       StopServicesCommand = new RelayCommand(() => IsEnabled, StopServicesCommandExecuted);
       ConfigVisibleCommand = new RelayCommand(() => true, ConfigVisibleCommandExecuted);
+      CloseCommand = new RelayCommand(() => true, () => Application.Current.Shutdown());
 
       IconViewModel = new IconViewModel(ServiceInfosObservable);
 
@@ -52,6 +53,8 @@ namespace MicroManager
     public RelayCommand StopServicesCommand { get; set; }
 
     public RelayCommand ConfigVisibleCommand { get; set; }
+
+    public RelayCommand CloseCommand { get; set; }
 
     public string SearchString
     {
