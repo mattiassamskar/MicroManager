@@ -4,6 +4,7 @@
         Title="MicroManager"
         Style="{DynamicResource MyStyle}"
         Topmost="{Binding TopMost}"
+        WindowState="{Binding WindowState}"
         AllowsTransparency="True"
         WindowStyle="None">
   <WindowChrome.WindowChrome>
@@ -56,16 +57,26 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
+    <TextBlock Text="MicroManager" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 0 0"></TextBlock>
     <DockPanel HorizontalAlignment="Right"
                VerticalAlignment="Top">
-      <Button Width="15"
-              Height="15"
+      <Button Width="16"
+              Height="16"
+              VerticalContentAlignment="Center"
+              HorizontalContentAlignment="Center"
+              Background="DarkGray"
+              Command="{Binding MinimizeCommand}"
+              Content="▁"
+              FontSize="8"
+              FontWeight="Bold" />
+      <Button Width="16"
+              Height="16"
               VerticalContentAlignment="Center"
               HorizontalContentAlignment="Center"
               Background="DarkGray"
               Command="{Binding CloseCommand}"
               Content="X"
-              FontSize="8"
+              FontSize="10"
               FontWeight="Bold" />
     </DockPanel>
     <Grid Grid.Row="1">

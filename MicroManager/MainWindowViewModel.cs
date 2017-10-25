@@ -16,6 +16,7 @@ namespace MicroManager
     private bool _topMost;
     private double _scale = 1;
     private bool _configVisible;
+    private WindowState _windowState;
 
     public MainWindowViewModel(IServiceHandler serviceHandler)
     {
@@ -25,6 +26,7 @@ namespace MicroManager
       StartServicesCommand = new RelayCommand(() => IsEnabled, StartServicesCommandExecuted);
       StopServicesCommand = new RelayCommand(() => IsEnabled, StopServicesCommandExecuted);
       ConfigVisibleCommand = new RelayCommand(() => true, ConfigVisibleCommandExecuted);
+      MinimizeCommand = new RelayCommand(() => true, () => WindowState = WindowState.Minimized);
       CloseCommand = new RelayCommand(() => true, () => Application.Current.Shutdown());
 
       IconViewModel = new IconViewModel(ServiceInfosObservable);
@@ -53,6 +55,8 @@ namespace MicroManager
     public RelayCommand StopServicesCommand { get; set; }
 
     public RelayCommand ConfigVisibleCommand { get; set; }
+
+    public RelayCommand MinimizeCommand { get; set; }
 
     public RelayCommand CloseCommand { get; set; }
 
@@ -103,6 +107,16 @@ namespace MicroManager
       set
       {
         _configVisible = value == Visibility.Visible;
+        OnPropertyChanged();
+      }
+    }
+
+    public WindowState WindowState
+    {
+      get => _windowState;
+      set
+      {
+        _windowState = value;
         OnPropertyChanged();
       }
     }
