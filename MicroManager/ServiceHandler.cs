@@ -38,7 +38,7 @@ namespace MicroManager
       if (service.Status != ServiceControllerStatus.Stopped) return;
 
       service.Start();
-      service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10));
+      service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(20));
     }
 
     public void StopService(string name)
@@ -48,7 +48,7 @@ namespace MicroManager
       if (service.Status != ServiceControllerStatus.Running) return;
 
       service.Stop();
-      service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
+      service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(20));
     }
 
     public void ToggleService(string name)
