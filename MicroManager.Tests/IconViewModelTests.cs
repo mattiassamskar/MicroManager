@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Reactive.Subjects;
 using System.Windows.Media;
-using MicroManager;
 using Xunit;
 
-namespace LdapSearch.Tests
+namespace MicroManager.Tests
 {
   public class IconViewModelTests
   {

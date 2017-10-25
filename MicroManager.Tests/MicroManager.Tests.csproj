@@ -8,8 +8,8 @@
     <ProjectGuid>{FE508820-FEDE-4086-8015-35E9A3EC73F7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LdapSearch.Tests</RootNamespace>
-    <AssemblyName>LdapSearch.Tests</AssemblyName>
+    <RootNamespace>MicroManager.Tests</RootNamespace>
+    <AssemblyName>MicroManager.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
